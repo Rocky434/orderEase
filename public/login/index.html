@@ -9,15 +9,15 @@
   <body>
     <div class="container">
       <form action="/login" method="post">
+        <label for="account"> 帳號: </label>
         <input
           type="text"
           class="account"
           id="account"
           name="account"
           placeholder="帳號:需大於8位"
+          required
         />
-        <label for="account"> 帳號: </label>
-        <input type="text" class="account" id="account" name="account" />
         <label for="password"> 密碼: </label>
         <input
           type="password"
@@ -25,6 +25,7 @@
           id="password"
           name="password"
           placeholder="密碼:需大於8位"
+          required
         />
         <a href="/forgutPwd">忘記密碼</a>
         <input type="submit" class="submit" id="submit" />

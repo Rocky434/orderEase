@@ -62,4 +62,7 @@ body {
     width: fit-content;
     color: rgb(173, 135, 88);
 }
-
+.errorMes{
+    align-self: flex-end;
+    color: rgb(196, 6, 6);
+}

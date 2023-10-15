@@ -13,52 +13,75 @@ router.get('/', function (req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+router.get('/signUp', (req, res) => {
+  res.render('signUp', { tempAccount: '', errorMes: ' ' });
+})
+
 router.post('/signUp', (req, res) => {
-  db(() => {
-    const { account, password } = req.body;
 
-    const checkExistingAccount = () => {
-      return Account.findOne({ account });
-    };
+  const { account, password } = req.body;
 
-    const createAccount = () => {
-      const newAccount = new Account({ account, password });
-      return newAccount.save();
-    };
+  const isAccountValid = () => {
+    return new Promise((resolve, reject) => {
+      if (account.length >= 8) {
+        resolve();
+      }
+      else {
+        reject({ status: 400, message: '帳戶至少8個字', account: account });
+      }
+    });
+  };
 
-    const handleSuccess = (savedAccount) => {
-      res.json({ success: true, message: 'Registration successful!', savedAccount });
-    };
-
-    const handleError = (error) => {
-      console.error('Error:', error);
-      res.status(500).json({ success: false, message: 'Registration failed. Please try again.' });
-    };
-
-    checkExistingAccount()
-      .then((existingAccount) => {
-        if (existingAccount) {
-          return Promise.reject({ status: 400, message: 'Account already exists. Please choose a different account.' });
-        }
-
-        // You can implement your own validation for password here
-        if (!isValidPassword(password)) {
-          return Promise.reject({ status: 400, message: 'Password is not valid.' });
-        }
-
-        return createAccount();
-      })
-      .then(handleSuccess)
-      .catch((error) => {
-        if (error.status) {
-          res.status(error.status).json({ success: false, message: error.message });
-        } else {
-          handleError(error);
-        }
+  const isAccountUnique = () => {
+    return accountModel.findOne({ account })
+      .then(existingAccount => {
+        if (existingAccount)
+          return Promise.reject({ status: 400, message: '帳號已註冊過', account: account });
       });
+  }
+
+  const isPasswordValid = () => {
+    return new Promise((resolve, reject) => {
+      if (password.length >= 8) {
+        resolve();
+      }
+      else {
+        reject({ status: 400, message: '密碼至少8個字', account: account });
+      }
+    });
+  };
+
+  const createAccount = () => {
+    const Account = new accountModel({ account, password });
+    return Account.save();
+  }
+
+  const handleSuccess = () => {
+    res.redirect('/login');
+  }
+
+  const handleError = (error) => {
+    if (error.status) {
+      res.render('signUp', { tempAccount: error.account, errorMes: error.message });
+    }
+    else {
+      console.log(error);
+      res.render('signUp', { tempAccount: error.account, errorMes: '錯誤' });
+    }
+  }
+  // Check account length
+  db()
+    .then(isAccountValid)
+    .then(isAccountUnique) // Check if account is unique
+    .then(isPasswordValid)
+    .then(createAccount) // Create account
+    .then(handleSuccess)
+    .catch(handleError)
+    .finally(() => {
+      mongoose.disconnect();
+    });
 
 
-  });
 
 
 })
