@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../stylesheets/login_signUp.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <form action="/login" method="post">
+        <input
+          type="text"
+          class="account"
+          id="account"
+          name="account"
+          placeholder="帳號:需大於8位"
+        />
+        <label for="account"> 帳號: </label>
+        <input type="text" class="account" id="account" name="account" />
+        <label for="password"> 密碼: </label>
+        <input
+          type="password"
+          class="password"
+          id="password"
+          name="password"
+          placeholder="密碼:需大於8位"
+        />
+        <a href="/forgutPwd">忘記密碼</a>
+        <input type="submit" class="submit" id="submit" />
+      </form>
+    </div>
+  </body>
+</html>

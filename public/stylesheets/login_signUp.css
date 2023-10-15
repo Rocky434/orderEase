@@ -1,0 +1,65 @@
+body {
+    font: 13px "Lucida Grande", Helvetica, Arial, sans-serif;
+    margin: 0px;
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+  }
+.container{
+    width: 350px;
+    height: 280px;
+    background-color: rgb(221, 221, 206);
+    border: 1px rgb(247, 244, 220);
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+.container .signUp,.container .login{
+    align-self: center;
+    font-size: 15px;
+    font-weight: bold;
+}
+.container label{
+    width: fit-content;
+    margin:5px 0 ;
+}
+.container form {
+    display: flex;
+    flex-direction: column; 
+    
+    padding: 20px;
+    height: 210px;
+}
+.account,.password{
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-sizing: border-box;
+    background-color: white;
+    font-size: 1em;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.submit{
+    margin-top: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 10px;
+    border: 0;
+    background-color: rgb(221, 211, 170);
+
+    font-size: 15px;
+    padding: 5px 0;
+    transition: 0.6s;
+}
+.submit:hover{
+    cursor: pointer;
+    background-color: rgb(231, 221, 179);
+    box-shadow: 0 4px 8px 0 rgb(221, 211, 170);
+    scale: 1.01;
+}
+.container form a{
+    text-decoration: none;
+    width: fit-content;
+    color: rgb(173, 135, 88);
+}
+
