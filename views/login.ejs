@@ -3,12 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../stylesheets/login_signUp.css" />
+    <link rel="stylesheet" href="/stylesheets/login_signUp.css" />
     <title>Document</title>
   </head>
   <body>
     <div class="container">
       <form action="/login" method="post">
+        <span class="signUp">登入</span>
         <label for="account"> 帳號: </label>
         <input
           type="text"
@@ -16,6 +17,7 @@
           id="account"
           name="account"
           placeholder="帳號:需大於8位"
+          value="<%= tempAccount %>"
           required
         />
         <label for="password"> 密碼: </label>
@@ -27,7 +29,8 @@
           placeholder="密碼:需大於8位"
           required
         />
-        <a href="/forgutPwd">忘記密碼</a>
+        <a href="/signUp">註冊</a>
+        <span class="errorMes"><%= errorMes %></span>
         <input type="submit" class="submit" id="submit" />
       </form>
     </div>

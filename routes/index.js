@@ -5,101 +5,62 @@ const fs = require('fs');
 const path = require('path');
 const db = require('../db/db');  //mongodb資校處理設定
 const accountModel = require('../models/accountModel');//mongodb資料類型設定
-const { default: mongoose } = require('mongoose');
+const login_signup_Function = require('../functions/login_signup_Function');
 
+let checkLoginMiddleware = (req, res, next) => {
+  if (!req.session.sid) {
+    console.log('hi/n');
+    return res.redirect('login');
+  }
+  next();
+}
 /* GET home page. */
-router.get('/', function (req, res, next) {
-
+router.get('/', checkLoginMiddleware, (req, res, next) => {
   res.render('index', { title: 'Express' });
+
 });
 
 router.get('/signUp', (req, res) => {
   res.render('signUp', { tempAccount: '', errorMes: ' ' });
-})
+});
 
-router.post('/signUp', (req, res) => {
-
-  const { account, password } = req.body;
-
-  const isAccountValid = () => {
-    return new Promise((resolve, reject) => {
-      if (account.length >= 8) {
-        resolve();
-      }
-      else {
-        reject({ status: 400, message: '帳戶至少8個字', account: account });
-      }
+router.post('/signUp', (req, res, next) => {
+  login_signup_Function.registerUser(req.body)
+    .then((message) => {
+      res.redirect(message.page);
+    })
+    .catch((message) => {
+      res.render(message.page, { tempAccount: req.body.account, errorMes: message.error });
     });
-  };
+});
 
-  const isAccountUnique = () => {
-    return accountModel.findOne({ account })
-      .then(existingAccount => {
-        if (existingAccount)
-          return Promise.reject({ status: 400, message: '帳號已註冊過', account: account });
-      });
-  }
-
-  const isPasswordValid = () => {
-    return new Promise((resolve, reject) => {
-      if (password.length >= 8) {
-        resolve();
-      }
-      else {
-        reject({ status: 400, message: '密碼至少8個字', account: account });
-      }
-    });
-  };
-
-  const createAccount = () => {
-    const Account = new accountModel({ account, password });
-    return Account.save();
-  }
-
-  const handleSuccess = () => {
-    res.redirect('/login');
-  }
-
-  const handleError = (error) => {
-    if (error.status) {
-      res.render('signUp', { tempAccount: error.account, errorMes: error.message });
-    }
-    else {
-      console.log(error);
-      res.render('signUp', { tempAccount: error.account, errorMes: '錯誤' });
-    }
-  }
-  // Check account length
-  db()
-    .then(isAccountValid)
-    .then(isAccountUnique) // Check if account is unique
-    .then(isPasswordValid)
-    .then(createAccount) // Create account
-    .then(handleSuccess)
-    .catch(handleError)
-    .finally(() => {
-      mongoose.disconnect();
-    });
-
-
-
-
-})
+router.get('/login', (req, res) => {
+  res.render('login', { tempAccount: '', errorMes: '' });
+});
 
 router.post('/login', (req, res) => {
-  //#region  本地log檔
-  // let id = shortid.generate();
-  // const reqBodyWithId = {
-  //   id,
-  //   ...req.body
-  // };
-  // let reqbody = requestBody = JSON.stringify(reqBodyWithId, null, 2);
-  //#endregion fs.appendFileSync(path.resolve(__dirname, '../accounts.log'), reqbody);
-
-  // 傳遞帳戶資訊給mongodb
-
-
-  res.redirect('/');
+  login_signup_Function.loginUser(req.body)
+    .then((message) => {
+      req.session.account = req.body.account;
+      req.session.sid = message.id;
+      req.session.save((err) => {
+        if (err) {
+          res.send(err);
+        }
+        else {
+          res.redirect(message.page);
+        }
+      });
+    })
+    .catch((message) => {
+      res.render(message.page, { tempAccount: req.body.account, errorMes: message.error });
+    });
 });
+
+router.get('/logout', (req, res) => {
+  req.session.destroy(() => {
+    res.redirect('login');
+  });
+})
 
 module.exports = router;  
