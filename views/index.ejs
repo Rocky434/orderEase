@@ -12,17 +12,214 @@
         <span>OrderEase</span>
         <div class="rightside">
           <ul>
-            <li><a href="">我的訂單</a></li>
-            <li><a href="">個人資料</a></li>
-            <li><a href="/logout">登出</a></li>
+            <li><a href="/order">我的訂單</a></li>
+            <li><a href="/cart">購物車</a></li>
+            <li><a href="/logout" id="logout">登出</a></li>
           </ul>
         </div>
       </div>
     </div>
+
     <div class="content">
-      <div class="container">
-        <div class="item1"></div>
+      <div class="ob">
+        <img src="/images/image.png" alt="" class="foodimg" />
+        <span class="foodname">Salad</span>
+        <span><%=salad[1]%> $</span>
+        <div class="quantity-container">
+          <button class="decrementbtn" id="decrementbtn">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="1em"
+              viewBox="0 0 448 512"
+            >
+              <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+              <path
+                d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"
+              />
+            </svg>
+          </button>
+          <span class="foodnum"><%=salad[0]%></span>
+          <button class="addbtn" id="addbtn">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="1em"
+              viewBox="0 0 448 512"
+            >
+              <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+              <path
+                d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="ob">
+        <img src="/images/steak.png" alt="" class="foodimg" />
+        <span class="foodname">Steak</span>
+        <span><%=steak[1]%> $</span>
+        <div class="quantity-container">
+          <button class="decrementbtn" id="decrementbtn">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="1em"
+              viewBox="0 0 448 512"
+            >
+              <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+              <path
+                d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"
+              />
+            </svg>
+          </button>
+          <span class="foodnum"><%=steak[0]%></span>
+          <button class="addbtn" id="addbtn">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="1em"
+              viewBox="0 0 448 512"
+            >
+              <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+              <path
+                d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="ob">
+        <img src="/images/salmon.png" alt="" class="foodimg" />
+        <span class="foodname">Salmon</span>
+        <span><%=salmon[1]%> $</span>
+        <div class="quantity-container">
+          <button class="decrementbtn" id="decrementbtn">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="1em"
+              viewBox="0 0 448 512"
+            >
+              <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+              <path
+                d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"
+              />
+            </svg>
+          </button>
+          <span class="foodnum"><%=salmon[0]%></span>
+          <button class="addbtn" id="addbtn">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="1em"
+              viewBox="0 0 448 512"
+            >
+              <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+              <path
+                d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   </body>
+  <script>
+    //#region 存Salad值到localStorage
+    // let addbtn = document.getElementsByClassName("addbtn");
+    // let num = document.getElementById("foodnum");
+    // let decrementbtn = document.getElementById("decrementbtn");
+    // if (Number(localStorage.getItem("Salad")) > 0) {
+    //   num.innerHTML = String(localStorage.getItem("Salad"));
+    // }
+
+    // addbtn.addEventListener("click", () => {
+    //   // 將 innerHTML 轉換為數字，進行加法運算後再轉回字串
+    //   num.innerHTML = String(Number(num.innerHTML) + 1);
+    //   // 將更新後的值存儲在 sessionStorage
+    //   localStorage.setItem("Salad", num.innerHTML);
+    // });
+
+    // decrementbtn.addEventListener("click", () => {
+    //   // 將 innerHTML 轉換為數字，進行加法運算後再轉回字串
+    //   if (Number(num.innerHTML) - 1 >= 0) {
+    //     num.innerHTML = String(Number(num.innerHTML) - 1);
+    //     localStorage.setItem("Salad", num.innerHTML);
+    //   }
+    //   if (localStorage.getItem("Salad") <= 0) localStorage.clear("Salad");
+
+    //   // 將更新後的值存儲在 sessionStorage
+    // });
+    //#endregion
+
+    // region 本地儲存方法
+    // let keys = Object.keys(localStorage);
+    // let values = Object.values(localStorage);
+    // let foods = ["Salad", "Steak", "Salmon"];
+    // for (let i = 0; i < addbtn.length; i++) {
+    //   if (values[i] > 0) {
+    //     if (keys[i] === "Salad") {
+    //       num[0].innerHTML = String(values[i]);
+    //     } else if (keys[i] === "Steak") {
+    //       num[1].innerHTML = String(values[i]);
+    //     } else if (keys[i] === "Salmon") {
+    //       num[2].innerHTML = String(values[i]);
+    //     }
+    //   }
+    //   addbtn[i].addEventListener("click", () => {
+    //     num[i].innerHTML = String(Number(num[i].innerHTML) + 1);
+    //     localStorage.setItem(foods[i], num[i].innerHTML);
+    //   });
+    // }
+    // for (let i = 0; i < decrementbtn.length; i++) {
+    //   decrementbtn[i].addEventListener("click", () => {
+    //     if (Number(num[i].innerHTML) - 1 >= 0) {
+    //       num[i].innerHTML = String(Number(num[i].innerHTML) - 1);
+    //       localStorage.setItem(foods[i], num[i].innerHTML);
+    //     }
+    //     if (num[i].innerHTML <= 0) {
+    //       localStorage.removeItem(foods[i]);
+    //     }
+    //   });
+    // }
+    // endregion
+
+    let addbtn = document.getElementsByClassName("addbtn");
+    let decrementbtn = document.getElementsByClassName("decrementbtn");
+    let num = document.getElementsByClassName("foodnum");
+    let logout = document.getElementById("logout");
+    let foods = ["salad", "steak", "salmon"];
+
+    for (let i = 0; i < addbtn.length; i++) {
+      addbtn[i].addEventListener("click", () => {
+        postData("http://127.0.0.1:3000/fetch/index", { [foods[i]]: 1 })
+          .then((data) => (num[i].innerHTML = data[foods[i]][0])) // JSON from `response.json()` call
+          .catch((error) => console.log(error));
+      });
+    }
+
+    for (let i = 0; i < addbtn.length; i++) {
+      decrementbtn[i].addEventListener("click", () => {
+        postData("http://127.0.0.1:3000/fetch/index", { [foods[i]]: -1 })
+          .then((data) => (num[i].innerHTML = data[foods[i]][0])) // JSON from `response.json()` call
+          .catch((error) => console.log(error));
+      });
+    }
+
+    function postData(url, data) {
+      // Default options are marked with *
+      return fetch(url, {
+        body: JSON.stringify(data), // must match 'Content-Type' header
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, same-origin, *omit
+        headers: {
+          "user-agent": "Mozilla/4.0 MDN Example",
+          "content-type": "application/json",
+        },
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        mode: "cors", // no-cors, cors, *same-origin
+        redirect: "follow", // manual, *follow, error
+        referrer: "no-referrer", // *client, no-referrer
+      }).then((response) => response.json()); // 輸出成 json
+    }
+
+    logout.addEventListener("click", () => {
+      localStorage.clear();
+    });
+  </script>
 </html>

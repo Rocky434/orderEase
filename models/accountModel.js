@@ -1,19 +1,22 @@
 const mongoose = require('mongoose');
 
-let accountsSchema = new mongoose.Schema({
-    account: {
+let accountSchema = mongoose.Schema({
+    Account: {
         type: String,
         unique: true,
         require: true,
         minlength: 8
     },
-    password: {
+    Password: {
         type: String,
         require: true,
         minlength: 8
-    }
-});
+    },
+    OrderList: {
+        type: String
+    },
+})
 
-let accountModel = mongoose.model('accounts', accountsSchema);
+let accountModel = mongoose.model('accounts', accountSchema);
 
 module.exports = accountModel;

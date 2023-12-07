@@ -1,24 +1,20 @@
-
 module.exports = function db() {
+    const mongoose = require('mongoose');
+    const { DBHOST, DBPOST, DBNAME } = require('../config/config');
     return new Promise((resolve, reject) => {
-
-        const { default: mongoose } = require('mongoose');
-        const { DBHOST, DBPOST, DBNAME } = require('../config/config');
-
         mongoose.connect(`mongodb://${DBHOST}:${DBPOST}/${DBNAME}`);
 
         mongoose.connection.once('open', () => {
-            console.log('歡迎來到');
+            console.log('成功連接數據庫');
             resolve();
-        });
-
+        })
         mongoose.connection.once('error', () => {
-            console.log('你錯了');
+            console.log('連接數據庫出錯');
             reject();
-        });
-
+        })
         mongoose.connection.once('close', () => {
-            console.log('結束');
-        });
-    });
+            console.log('數據庫結束連接');
+        })
+
+    })
 }

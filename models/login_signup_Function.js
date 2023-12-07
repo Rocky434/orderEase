@@ -5,6 +5,7 @@ const md5 = require('md5');
 
 let message = { status: 200, message: '', account: '', page: '', error: '', id: '' };
 
+// 檢測帳號是否超過7個字
 const isAccountValid = (account) => {
     return new Promise((resolve, reject) => {
         if (account.length >= 8) {
@@ -16,14 +17,7 @@ const isAccountValid = (account) => {
     });
 };
 
-const isAccountUnique = (account) => {
-    return accountModel.findOne({ account })
-        .then(existingAccount => {
-            if (existingAccount)
-                return Promise.reject({ status: 412, message: '帳號已註冊過' });
-        });
-}
-
+// 檢測密碼是否超過7個字
 const isPasswordValid = (password) => {
     return new Promise((resolve, reject) => {
         if (password.length >= 8) {
@@ -35,32 +29,51 @@ const isPasswordValid = (password) => {
     });
 };
 
+
+
+//#region 註冊時所使用的函式
+// 撿測帳號是否唯一
+const isAccountUnique = (account) => {
+    return accountModel.findOne({ account })
+        .then(existingAccount => {
+            if (existingAccount)
+                return Promise.reject({ status: 412, message: '帳號已註冊過' });
+        });
+}
+
+// 在資料庫中，儲存帳號與加密後的密碼。
 const createAccount = (account, password) => {
     password = md5(password);
     const Account = new accountModel({ account, password });
     return Account.save();
 }
-
+// 成功處理，接收成功後的跳轉頁面。
 const handleSuccess = (page) => {
     message.page = page;
 }
-
+// 失敗處理，接收失敗後顯示的頁面資訊，有錯誤訊息與錯誤狀態。
 const handleError = (error, page) => {
     message.page = page;
     message.account = error.account;
     if (error.status) {
-        // res.render('signUp', { tempAccount: error.account, errorMes: error.message });
         message.status = error.status;
         message.error = error.message;
     }
     else {
         console.log(error);
-        //res.render('signUp', { tempAccount: error.account, errorMes: '錯誤' });
         message.status = 414;
         message.error = '錯誤';
     }
 }
 
+//#endregion
+
+const disconnect = () => {
+    mongoose.disconnect();
+}
+
+//#region 登入時所使用的函式
+// 檢測帳號是否存在，
 const isAccountExisting = (account) => {
     return accountModel.findOne({ account: account }).exec()
         .then((value) => {
@@ -69,7 +82,7 @@ const isAccountExisting = (account) => {
             }
         });
 };
-
+// 檢查密碼是否存在，
 const isPasswordExsisting = (account, password) => {
     return accountModel.findOne({ account: account, password: md5(password) }).exec()
         .then((value) => {
@@ -82,10 +95,7 @@ const isPasswordExsisting = (account, password) => {
         });
 };
 
-const disconnect = () => {
-    mongoose.disconnect();
-
-}
+//#endregion
 
 const registerUser = (req_body) => {
     const { account, password } = req_body;

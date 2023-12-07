@@ -4,7 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+const loginsignup = require('./routes/loginSignup');
 const session = require("express-session");
 const MongoStore = require('connect-mongo');
 const { DBHOST, DBPOST, DBNAME } = require('./config/config');
@@ -12,18 +12,19 @@ const { DBHOST, DBPOST, DBNAME } = require('./config/config');
 var app = express();
 
 app.use(session({
-  name: 'sid', //设置cookie的name，默认值是：connect.sid
-  secret: 'atguigu', //参与加密的字符串（又称签名）
-  saveUninitialized: false, //是否为每次请求都设置一个cookie用来存储session的id
-  resave: true, //是否在每次请求时重新保存session
+  name: 'sid', //設置cookie的name，默认值是：connect.sid
+  secret: 'Wu', //參與加密的字符串(簽名)
+  saveUninitialized: false, //是否為每次請求都設置一个cookie用來存儲session的id
+  resave: true, //是否在每次請求時重新保存session
   store: MongoStore.create({
-    mongoUrl: `mongodb://${DBHOST}:${DBPOST}/${DBNAME}` //数据库的连接配置
+    mongoUrl: `mongodb://${DBHOST}:${DBPOST}/${DBNAME}` //數據庫的連接配置
   }),
   cookie: {
-    httpOnly: true, // 开启后前端无法通过 JS 操作
-    maxAge: 1000 * 60 * 60 // 这一条 是控制 sessionID 的过期时间的！！！
+    httpOnly: true, // 開啟後前端無法通過 JS 操作
+    maxAge: 1000 * 60 * 60 // 這一條是控制 sessionID 的過期時間的！！！
   },
 }))
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -35,7 +36,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/', loginsignup);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
