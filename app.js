@@ -4,7 +4,11 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const indexRouter = require('./routes/index');
-const loginsignup = require('./routes/loginSignup');
+const loginsignupRouter = require('./routes/loginSignup');
+const cartRouter = require('./routes/cart');
+const orderRecordsRouter = require('./routes/orderRecords');
+const storeRouter = require('./routes/store');
+const Middleware = require('./models/middleware');
 const session = require("express-session");
 const MongoStore = require('connect-mongo');
 const { DBHOST, DBPOST, DBNAME } = require('./config/config');
@@ -36,8 +40,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/', loginsignup);
-
+app.use('/', loginsignupRouter);
+app.use('/', cartRouter);
+app.use('/', orderRecordsRouter);
+app.use('/store', Middleware.checkLoginMiddleware, storeRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

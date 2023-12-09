@@ -15,14 +15,14 @@
     let values;
 
     fetch("/fetch/cart", {
-      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: "same-origin", // include, same-origin, *omit
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached 不設置快取
+      credentials: "same-origin", // include, same-origin, *omit 只接受同源請求
       headers: {
         "user-agent": "Mozilla/4.0 MDN Example",
         "content-type": "application/json",
       },
       method: "GET",
-      mode: "cors", // no-cors, cors, *same-origin
+      mode: "cors", // no-cors, cors, *same-origin 跨域請求開啟
       redirect: "follow", // manual, *follow, error
       referrer: "no-referrer", // *client, no-referrer
     })
@@ -93,37 +93,31 @@
       } else {
         list.innerHTML = "";
       }
-
-      // let addbtn = document.getElementsByClassName("addbtn");
-      // let num = document.getElementsByClassName("foodnum");
-      // let decrementbtn = document.getElementsByClassName("decrementbtn");
-
-      // for (let i = 0; i < addbtn.length; i++) {
-      //   addbtn[i].addEventListener("click", () => {
-      //     num[i].innerHTML = String(Number(num[i].innerHTML) + 1);
-      //     localStorage.setItem(keys[i], num[i].innerHTML);
-      //   });
-      // }
-      // for (let i = 0; i < decrementbtn.length; i++) {
-      //   decrementbtn[i].addEventListener("click", () => {
-      //     if (Number(num[i].innerHTML) - 1 >= 0) {
-      //       num[i].innerHTML = String(Number(num[i].innerHTML) - 1);
-      //       localStorage.setItem(keys[i], num[i].innerHTML);
-      //     }
-
-      //     if (Number(num[i].innerHTML) < 1) {
-      //       localStorage.removeItem(keys[i]);
-      //       reRender();
-      //       num = document.getElementsByClassName("foodnum");
-      //     } else {
-      //     }
-      //   });
-      // }
       let addbtn = document.getElementsByClassName("addbtn");
       let decrementbtn = document.getElementsByClassName("decrementbtn");
       let submit = document.getElementById("submit");
 
-      submit.addEventListener("click", () => {});
+      submit.addEventListener("click", () => {
+        fetch("/fetch/addOrder", {
+          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+          credentials: "same-origin", // include, same-origin, *omit
+          headers: {
+            "user-agent": "Mozilla/4.0 MDN Example",
+            "content-type": "application/json",
+          },
+          method: "GET",
+          mode: "cors", // no-cors, cors, *same-origin
+          redirect: "follow", // manual, *follow, error
+          referrer: "no-referrer", // *client, no-referrer
+        })
+          .then((response) => response.json())
+          .then((res) => {
+            window.location.href = res.url; // 页面重定向到根路径
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      });
 
       for (let i = 0; i < addbtn.length; i++) {
         addbtn[i].addEventListener("click", () => {
@@ -165,6 +159,32 @@
           referrer: "no-referrer", // *client, no-referrer
         }).then((response) => response.json()); // 輸出成 json
       }
+
+      // let addbtn = document.getElementsByClassName("addbtn");
+      // let num = document.getElementsByClassName("foodnum");
+      // let decrementbtn = document.getElementsByClassName("decrementbtn");
+
+      // for (let i = 0; i < addbtn.length; i++) {
+      //   addbtn[i].addEventListener("click", () => {
+      //     num[i].innerHTML = String(Number(num[i].innerHTML) + 1);
+      //     localStorage.setItem(keys[i], num[i].innerHTML);
+      //   });
+      // }
+      // for (let i = 0; i < decrementbtn.length; i++) {
+      //   decrementbtn[i].addEventListener("click", () => {
+      //     if (Number(num[i].innerHTML) - 1 >= 0) {
+      //       num[i].innerHTML = String(Number(num[i].innerHTML) - 1);
+      //       localStorage.setItem(keys[i], num[i].innerHTML);
+      //     }
+
+      //     if (Number(num[i].innerHTML) < 1) {
+      //       localStorage.removeItem(keys[i]);
+      //       reRender();
+      //       num = document.getElementsByClassName("foodnum");
+      //     } else {
+      //     }
+      //   });
+      // }
     };
   </script>
 </html>

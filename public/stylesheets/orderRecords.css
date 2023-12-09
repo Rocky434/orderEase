@@ -1,0 +1,59 @@
+body {
+  margin: 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+}
+.container {
+  width: 500px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  border-bottom: 1px solid black;
+}
+.item {
+  height: 200px;
+  width: 700px;
+}
+.content {
+  width: 500px;
+  padding-bottom: 20px;
+}
+.foods {
+  margin-top: 10px;
+  font-size: 18px;
+}
+.dishCount {
+  font-size: 20px;
+  color: rgb(161, 161, 161);
+}
+.portions {
+  margin: 0 5px;
+}
+.amount {
+  margin-left: 30px;
+}
+.foodName {
+  font-size: 18px;
+}
+.date {
+  float: right;
+}
+.submit {
+  height: 30px;
+  width: 100px;
+  background-color: white;
+  border-radius: 10px;
+  float: right;
+  margin-bottom: 22px;
+}
+.submit:hover {
+  box-shadow: 0 0 2px black;
+  cursor: pointer;
+  scale: 1.02;
+}
+.topbar {
+  font-size: 25px;
+  margin-bottom: 15px;
+}

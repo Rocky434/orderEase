@@ -1,6 +1,5 @@
 const { default: mongoose } = require('mongoose');
-const accountModel = require('../models/accountModel');
-const db = require('../db/db');
+const accountModel = require('./dbModel/accountModel');
 const md5 = require('md5');
 
 let message = { status: 200, message: '', account: '', page: '', error: '', id: '' };
@@ -34,7 +33,7 @@ const isPasswordValid = (password) => {
 //#region 註冊時所使用的函式
 // 撿測帳號是否唯一
 const isAccountUnique = (account) => {
-    return accountModel.findOne({ account })
+    return accountModel.findOne({ Account: account })
         .then(existingAccount => {
             if (existingAccount)
                 return Promise.reject({ status: 412, message: '帳號已註冊過' });
@@ -44,7 +43,7 @@ const isAccountUnique = (account) => {
 // 在資料庫中，儲存帳號與加密後的密碼。
 const createAccount = (account, password) => {
     password = md5(password);
-    const Account = new accountModel({ account, password });
+    const Account = new accountModel({ Account: account, Password: password, OrderRecords: [] });
     return Account.save();
 }
 // 成功處理，接收成功後的跳轉頁面。
@@ -68,14 +67,12 @@ const handleError = (error, page) => {
 
 //#endregion
 
-const disconnect = () => {
-    mongoose.disconnect();
-}
+
 
 //#region 登入時所使用的函式
 // 檢測帳號是否存在，
 const isAccountExisting = (account) => {
-    return accountModel.findOne({ account: account }).exec()
+    return accountModel.findOne({ Account: account }).exec()
         .then((value) => {
             if (!value) {
                 return Promise.reject({ status: 415, message: '帳號不存在' });
@@ -84,7 +81,7 @@ const isAccountExisting = (account) => {
 };
 // 檢查密碼是否存在，
 const isPasswordExsisting = (account, password) => {
-    return accountModel.findOne({ account: account, password: md5(password) }).exec()
+    return accountModel.findOne({ Account: account, Password: md5(password) }).exec()
         .then((value) => {
             if (!value) {
                 return Promise.reject({ status: 416, message: '密碼錯誤' });
@@ -100,8 +97,7 @@ const isPasswordExsisting = (account, password) => {
 const registerUser = (req_body) => {
     const { account, password } = req_body;
     return new Promise((resolve, reject) => {
-        db()
-            .then(() => isAccountValid(account))  // Check account length
+        isAccountValid(account)  // Check account length
             .then(() => isAccountUnique(account)) // Check if account is unique
             .then(() => isPasswordValid(password))
             .then(() => createAccount(account, password)) // Create account
@@ -113,17 +109,13 @@ const registerUser = (req_body) => {
                 handleError(error, 'signUp');
                 reject(message);
             })
-            .finally(disconnect);
-
     });
 }
 
 const loginUser = (req_body) => {
     const { account, password } = req_body;
-
     return new Promise((resolve, reject) => {
-        db()
-            .then(() => isAccountValid(account))
+        isAccountValid(account)
             .then(() => isPasswordValid(password))
             .then(() => isAccountExisting(account))
             .then(() => isPasswordExsisting(account, password))
@@ -135,7 +127,7 @@ const loginUser = (req_body) => {
                 handleError(error, 'login');
                 reject(message);
             })
-            .finally(disconnect);
+
     });
 }
 

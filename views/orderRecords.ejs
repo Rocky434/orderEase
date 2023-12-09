@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/stylesheets/orderRecords.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <% if(orderRecords){%> <%orderRecords.reverse().forEach((order) => {%>
+    <div class="container">
+      <div class="content">
+        <div class="dishCount">
+          <span>總共<%=order.totalQuantity%>份餐點</span>
+          <span class="amount"><%=order.amount%>元</span>
+          <span class="date">
+            <%if(order.expiration===true){%>
+            <%=order.date.toLocaleString(undefined, { year: 'numeric', month:
+            '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })%>
+            <%}else{if(order.expirationTime-currentTime<=0){%>餐點已完成
+            <%}else{let remainingTimeInMinutes =
+            Math.floor((order.expirationTime - currentTime) / 60000); %>
+            餐點製作還剩: <%=remainingTimeInMinutes%> 分鐘 <%}}%>
+          </span>
+        </div>
+        <%order.foods.forEach((food) => {%>
+        <div class="foods">
+          <span class="portions"><%=food.quantity%></span>
+          <span class="foodName"><%=food.foodsName%></span>
+        </div>
+        <%});%>
+      </div>
+    </div>
+    <%});}%>
+  </body>
+  <script>
+    setTimeout(() => {
+      location.reload();
+      // fetch("/fetch/decreaseOrderTime", {
+      //   cache: "no-cache",
+      //   mode: "cors",
+      //   credentials: "same-origin",
+      //   method: "GET",
+      //   redirect: "follow",
+      //   referrer: "no-referrer",
+      // });
+    }, 1000 * 60);
+    // document.body.innerHTML = `<div class="container">
+    //     <div class="content">
+    //       <div class="dishCount">
+    //         <span>餐點</span>
+    //         <span class="amount">金額元</span>
+    //       </div>
+    //       <div class="foods">
+    //         <span class="portions">1</span>
+    //         <span>牛排</span>
+    //       </div>
+    //     </div>
+    //   </div>
+    // `;
+  </script>
+</html>
