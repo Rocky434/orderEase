@@ -193,7 +193,7 @@
       });
     }
 
-    for (let i = 0; i < addbtn.length; i++) {
+    for (let i = 0; i < decrementbtn.length; i++) {
       decrementbtn[i].addEventListener("click", () => {
         postData("http://127.0.0.1:3000/fetch/index", { [foods[i]]: -1 })
           .then((data) => (num[i].innerHTML = data[foods[i]][0])) // JSON from `response.json()` call

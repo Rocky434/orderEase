@@ -15,8 +15,7 @@ let accountSchema = mongoose.Schema({
     OrderRecords: [{
         id: {
             type: mongoose.Schema.Types.ObjectId,
-            required: true,
-            unique: true
+            default: new mongoose.Types.ObjectId()
         },
         date: {
             type: Date,

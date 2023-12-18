@@ -4,12 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/stylesheets/orderRecords.css" />
+    <script src="https://cdn.jsdelivr.net/npm/socket.io-client/dist/socket.io.js"></script>
     <title>Document</title>
   </head>
   <body>
-    <% if(orderRecords){%>
+    <div class="nav">
+      <a href="/store/storeIndex">首頁</a>
+      <a href="/store/pendingOrder" class="orderRecords">處理訂單</a>
+    </div>
     <div class="topbar">歷史訂單</div>
-    <%orderRecords.reverse().forEach((order) => {%>
+    <% if(orderRecords){%> <%orderRecords.reverse().forEach((order) => {%>
     <div class="container">
       <div class="content">
         <div class="dishCount">
@@ -32,7 +36,6 @@
         </div>
         <%});%>
       </div>
-
       <%if(order.expiration!==true){%>
       <button class="submit">訂單完成</button>
       <%}%>
@@ -40,30 +43,6 @@
     <%});}%>
   </body>
   <script>
-    setTimeout(() => {
-      location.reload();
-      // fetch("/fetch/decreaseOrderTime", {
-      //   cache: "no-cache",
-      //   mode: "cors",
-      //   credentials: "same-origin",
-      //   method: "GET",
-      //   redirect: "follow",
-      //   referrer: "no-referrer",
-      // });
-    }, 1000 * 60);
-
-    // document.body.innerHTML = `<div class="container">
-    //     <div class="content">
-    //       <div class="dishCount">
-    //         <span>餐點</span>
-    //         <span class="amount">金額元</span>
-    //       </div>
-    //       <div class="foods">
-    //         <span class="portions">1</span>
-    //         <span>牛排</span>
-    //       </div>
-    //     </div>
-    //   </div>
-    // `;
+    const socket = io("http://127.0.0.1:3000");
   </script>
 </html>

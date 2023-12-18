@@ -57,3 +57,15 @@ body {
   font-size: 25px;
   margin-bottom: 15px;
 }
+.nav {
+  width: 900px;
+}
+.nav .orderRecords {
+  float: right;
+}
+a {
+  font-weight: 700;
+  font-size: 20px;
+  color: #000000;
+  text-decoration: none;
+}

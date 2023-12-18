@@ -2,9 +2,10 @@ const mongoose = require('mongoose');
 
 let orderRecordSchema = mongoose.Schema({
     id: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        unique: true
+        type: mongoose.Schema.Types.ObjectId
+    },
+    accountId: {
+        type: mongoose.Schema.Types.ObjectId
     },
     date: {
         type: Date,

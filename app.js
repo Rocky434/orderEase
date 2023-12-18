@@ -11,9 +11,12 @@ const storeRouter = require('./routes/store');
 const Middleware = require('./models/middleware');
 const session = require("express-session");
 const MongoStore = require('connect-mongo');
+const cors = require('cors');
 const { DBHOST, DBPOST, DBNAME } = require('./config/config');
 
 var app = express();
+
+app.use(cors());
 
 app.use(session({
   name: 'sid', //設置cookie的name，默认值是：connect.sid
@@ -43,7 +46,7 @@ app.use('/', indexRouter);
 app.use('/', loginsignupRouter);
 app.use('/', cartRouter);
 app.use('/', orderRecordsRouter);
-app.use('/store', Middleware.checkLoginMiddleware, storeRouter);
+app.use('/store', Middleware.checkIsStoreMiddleware, storeRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

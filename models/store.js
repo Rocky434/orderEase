@@ -5,15 +5,6 @@ function getPendingOrderRecords(req) {
     return new Promise((resolve, reject) => {
         orderRecordsModel.find({ expiration: false })
             .then((orderRecords) => {
-                // orderRecords 包含了所有账户的 OrderRecords 数据
-                // orderRecords.map((record) => console.log(record.OrderRecords.foods))
-                // orderRecords.forEach(record => {
-                //     console.log(record.OrderRecords.foods);
-                //     record.OrderRecords.foods.forEach(food => {
-                //         console.log(food);
-                //     });
-                //     console.log(record.OrderRecords.amount);
-                // });
                 resolve(orderRecords);
             })
             .catch((err) => {
@@ -27,15 +18,6 @@ function getCompletedOrderRecords(req) {
     return new Promise((resolve, reject) => {
         orderRecordsModel.find({ expiration: true })
             .then((orderRecords) => {
-                // orderRecords 包含了所有账户的 OrderRecords 数据
-                // orderRecords.map((record) => console.log(record.OrderRecords.foods))
-                // orderRecords.forEach(record => {
-                //     console.log(record.OrderRecords.foods);
-                //     record.OrderRecords.foods.forEach(food => {
-                //         console.log(food);
-                //     });
-                //     console.log(record.OrderRecords.amount);
-                // });
                 resolve(orderRecords);
             })
             .catch((err) => {
@@ -46,7 +28,7 @@ function getCompletedOrderRecords(req) {
     });
 }
 function setExpiration(orderRecord) {
-    console.log(orderRecord.id);
+
     orderRecord.updateOne({ expiration: true })
         .then((result) => {
             console.log("成功更改店家端expiration");
@@ -59,6 +41,7 @@ function setExpiration(orderRecord) {
         { arrayFilters: [{ 'elem.id': orderRecord.id }] }
     )
         .then(() => {
+            console.log("1   " + orderRecord.id);
             console.log("成功更改客戶端expiration");
         })
         .catch((err) => {
@@ -68,11 +51,10 @@ function setExpiration(orderRecord) {
 function completedOrder(req) {
     return new Promise((resolve, reject) => {
         const key = Object.keys(req.body);
-        console.log(key);
         getPendingOrderRecords(req)
             .then((orderRecords) => {
                 setExpiration(orderRecords.reverse()[key]);
-                resolve(orderRecords);
+                resolve(orderRecords.reverse()[key]);
             }).catch((err) => {
                 console.error(err);
                 reject(err);

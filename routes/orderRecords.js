@@ -6,8 +6,8 @@ const { addOrderRecords, getOrderRecords } = require('../models/orderRecords');
 // 訂餐紀錄頁面
 router.get('/fetch/addOrder', Middleware.checkLoginMiddleware, (req, res, next) => {
     addOrderRecords(req)
-        .then((result) => {
-            res.json({ url: "http://127.0.0.1:3000/Records" });
+        .then((orderId) => {
+            res.json({ url: "http://127.0.0.1:3000/Records", orderId });
         }).catch((err) => {
             console.log(err);
         });
@@ -25,5 +25,7 @@ router.get('/Records', Middleware.checkLoginMiddleware, (req, res, next) => {
         });
 
 });
-
+router.get('/fetch/clientSid', (req, res, next) => {
+    res.json(req.session);
+});
 module.exports = router;  

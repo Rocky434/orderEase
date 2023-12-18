@@ -9,6 +9,7 @@ db()
     var app = require('../app');
     var debug = require('debug')('login:server');
     var http = require('http');
+    const socketIo = require('socket.io');
 
     /**
      * Get port from environment and store in Express.
@@ -21,12 +22,50 @@ db()
      * Create HTTP server.
      */
 
-    var server = http.createServer(app);
+    let server = http.createServer(app);
 
+
+
+
+    // 在 HTTP 伺服器上建立 Socket.io 連線
+    const io = socketIo(server);
+    let connectionsMap = new Map();
+    let storeID;
+    io.on('connection', (socket) => {
+
+      socket.on('storeId', (storeId) => {
+        storeID = storeId;
+        //console.log(storeId);
+        connectionsMap.set(storeId, socket);
+      })
+
+      socket.on('clientSid', (clientId) => {
+        connectionsMap.set(clientId, socket);
+      })
+
+      socket.on('completeOrder', (sid) => {
+        // 根據 sid 找到對應的 socket
+        const targetSocket = connectionsMap.get(sid);
+        console.log(sid);
+        if (targetSocket) {
+          console.log("哈囉");
+          targetSocket.emit('modifyClientOrderExpiration'); // 向特定客戶端發送訂單完成通知
+        }
+      });
+      //socket.on('')
+      // 在這裡可以設置與客戶端的交互行為
+      socket.on('addOrder', () => {
+        const targetSocket = connectionsMap.get(storeID);
+        targetSocket.emit('reloadPendingOrder');
+      });
+
+      socket.on('disconnect', () => {
+
+      });
+    });
     /**
-     * Listen on provided port, on all network interfaces.
-     */
-
+        * Listen on provided port, on all network interfaces.
+    */
     server.listen(port);
     server.on('error', onError);
     server.on('listening', onListening);

@@ -4,11 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/stylesheets/orderRecords.css" />
+    <script src="https://cdn.jsdelivr.net/npm/socket.io-client/dist/socket.io.js"></script>
     <title>Document</title>
   </head>
   <body>
     <% if(orderRecords){%> <%orderRecords.reverse().forEach((order) => {%>
-    <div class="container">
+    <div class="container" id="<%=order.id%>">
       <div class="content">
         <div class="dishCount">
           <span>總共<%=order.totalQuantity%>份餐點</span>
@@ -17,7 +18,7 @@
             <%if(order.expiration===true){%>
             <%=order.date.toLocaleString(undefined, { year: 'numeric', month:
             '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })%>
-            <%}else{if(order.expirationTime-currentTime<=0){%>餐點已完成
+            <%}else{if(order.expirationTime-currentTime<=0){%>餐點即將完成
             <%}else{let remainingTimeInMinutes =
             Math.floor((order.expirationTime - currentTime) / 60000); %>
             餐點製作還剩: <%=remainingTimeInMinutes%> 分鐘 <%}}%>
@@ -34,29 +35,33 @@
     <%});}%>
   </body>
   <script>
-    setTimeout(() => {
+    const socket = io("http://127.0.0.1:3000");
+    getFetch("http://127.0.0.1:3000/fetch/clientSid")
+      .then((data) => {
+        console.log(data.sid);
+        socket.emit("clientSid", data.sid);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    function getFetch(url) {
+      return fetch(url, {
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, same-origin, *omit
+        headers: {
+          "user-agent": "Mozilla/4.0 MDN Example",
+          "content-type": "application/json",
+        },
+        method: "GET",
+        mode: "cors", // no-cors, cors, *same-origin
+        redirect: "follow", // manual, *follow, error
+        referrer: "no-referrer", // *client, no-referrer
+      }).then((response) => response.json());
+    }
+
+    socket.on("modifyClientOrderExpiration", () => {
       location.reload();
-      // fetch("/fetch/decreaseOrderTime", {
-      //   cache: "no-cache",
-      //   mode: "cors",
-      //   credentials: "same-origin",
-      //   method: "GET",
-      //   redirect: "follow",
-      //   referrer: "no-referrer",
-      // });
-    }, 1000 * 60);
-    // document.body.innerHTML = `<div class="container">
-    //     <div class="content">
-    //       <div class="dishCount">
-    //         <span>餐點</span>
-    //         <span class="amount">金額元</span>
-    //       </div>
-    //       <div class="foods">
-    //         <span class="portions">1</span>
-    //         <span>牛排</span>
-    //       </div>
-    //     </div>
-    //   </div>
-    // `;
+    });
   </script>
 </html>

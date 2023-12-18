@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/socket.io-client/dist/socket.io.js"></script>
     <link rel="stylesheet" href="stylesheets/cart.css" />
     <title>Document</title>
   </head>
@@ -13,25 +14,8 @@
     let list = document.getElementById("list");
     let keys;
     let values;
-
-    fetch("/fetch/cart", {
-      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached 不設置快取
-      credentials: "same-origin", // include, same-origin, *omit 只接受同源請求
-      headers: {
-        "user-agent": "Mozilla/4.0 MDN Example",
-        "content-type": "application/json",
-      },
-      method: "GET",
-      mode: "cors", // no-cors, cors, *same-origin 跨域請求開啟
-      redirect: "follow", // manual, *follow, error
-      referrer: "no-referrer", // *client, no-referrer
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
+    const socket = io("http://127.0.0.1:3000");
+    getFetch("/fetch/cart")
       .then((data) => {
         console.log(data); // 确认是否能打印出返回的数据
         keys = Object.keys(data);
@@ -45,7 +29,7 @@
         );
       });
 
-    let reRender = () => {
+    function reRender() {
       let check = 0;
       console.log("exercise rerender");
       if (keys.length > 0) {
@@ -93,29 +77,20 @@
       } else {
         list.innerHTML = "";
       }
+
       let addbtn = document.getElementsByClassName("addbtn");
       let decrementbtn = document.getElementsByClassName("decrementbtn");
       let submit = document.getElementById("submit");
 
       submit.addEventListener("click", () => {
-        fetch("/fetch/addOrder", {
-          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-          credentials: "same-origin", // include, same-origin, *omit
-          headers: {
-            "user-agent": "Mozilla/4.0 MDN Example",
-            "content-type": "application/json",
-          },
-          method: "GET",
-          mode: "cors", // no-cors, cors, *same-origin
-          redirect: "follow", // manual, *follow, error
-          referrer: "no-referrer", // *client, no-referrer
-        })
-          .then((response) => response.json())
+        getFetch("/fetch/addOrder")
           .then((res) => {
+            socket.emit("addOrder");
+            console.log(res.orderId);
             window.location.href = res.url; // 页面重定向到根路径
           })
           .catch((error) => {
-            console.error("Error:", error);
+            console.log(error);
           });
       });
 
@@ -185,6 +160,21 @@
       //     }
       //   });
       // }
-    };
+    }
+
+    function getFetch(url) {
+      return fetch(url, {
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, same-origin, *omit
+        headers: {
+          "user-agent": "Mozilla/4.0 MDN Example",
+          "content-type": "application/json",
+        },
+        method: "GET",
+        mode: "cors", // no-cors, cors, *same-origin
+        redirect: "follow", // manual, *follow, error
+        referrer: "no-referrer", // *client, no-referrer
+      }).then((response) => response.json());
+    }
   </script>
 </html>
