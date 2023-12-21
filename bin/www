@@ -55,8 +55,10 @@ db()
       //socket.on('')
       // 在這裡可以設置與客戶端的交互行為
       socket.on('addOrder', () => {
-        const targetSocket = connectionsMap.get(storeID);
-        targetSocket.emit('reloadPendingOrder');
+        if (storeID) {
+          const targetSocket = connectionsMap.get(storeID);
+          targetSocket.emit('reloadPendingOrder');
+        }
       });
 
       socket.on('disconnect', () => {
