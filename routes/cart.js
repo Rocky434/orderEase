@@ -6,7 +6,7 @@ let Middleware = require('../models/middleware');
 router.get('/cart', Middleware.checkLoginMiddleware, (req, res) => {
     res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
     const Url = `https://${process.env.RAILWAY_URL}` || "http://127.0.0.1:3000"; // 使用 Railway URL 或者默認的本地 URL
-    res.render('cart', Url);
+    res.render('cart', { Url });
 });
 
 // 前端獲取session的cart資料。
