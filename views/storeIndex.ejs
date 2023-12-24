@@ -186,10 +186,11 @@
     let num = document.getElementsByClassName("foodnum");
     let logout = document.getElementById("logout");
     let foods = ["salad", "steak", "salmon"];
+    const Host = process.env.RAILWAY_URL || "http://127.0.0.1:3000"; // 使用 Railway URL 或者默認的本地 URL
 
     for (let i = 0; i < addbtn.length; i++) {
       addbtn[i].addEventListener("click", () => {
-        postData("http://127.0.0.1:3000/fetch/index", { [foods[i]]: 1 })
+        postData(`${Host}/fetch/index`, { [foods[i]]: 1 })
           .then((data) => (num[i].innerHTML = data[foods[i]][0])) // JSON from `response.json()` call
           .catch((error) => console.log(error));
       });
@@ -197,7 +198,7 @@
 
     for (let i = 0; i < addbtn.length; i++) {
       decrementbtn[i].addEventListener("click", () => {
-        postData("http://127.0.0.1:3000/fetch/index", { [foods[i]]: -1 })
+        postData(`${Host}/fetch/index`, { [foods[i]]: -1 })
           .then((data) => (num[i].innerHTML = data[foods[i]][0])) // JSON from `response.json()` call
           .catch((error) => console.log(error));
       });

@@ -35,8 +35,9 @@
     <%});}%>
   </body>
   <script>
-    const socket = io("http://127.0.0.1:3000");
-    getFetch("http://127.0.0.1:3000/fetch/clientSid")
+    const Host = process.env.RAILWAY_URL || "http://127.0.0.1:3000"; // 使用 Railway URL 或者默認的本地 URL
+    const socket = io(Host);
+    getFetch(`${Host}/fetch/clientSid`)
       .then((data) => {
         console.log(data.sid);
         socket.emit("clientSid", data.sid);

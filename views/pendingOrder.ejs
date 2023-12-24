@@ -42,13 +42,14 @@
   <script>
     let orderSubmit = document.getElementsByClassName("submit");
     let container = document.getElementsByClassName("container");
-    const socket = io("http://127.0.0.1:3000");
+    const Host = process.env.RAILWAY_URL || "http://127.0.0.1:3000"; // 使用 Railway URL 或者默認的本地 URL
+    const socket = io(Host);
     socket.on("reloadPendingOrder", () => {
       console.log("get");
       location.reload();
     });
 
-    getFetch("http://127.0.0.1:3000/store/fetch/getStoreId")
+    getFetch(`${Host}/store/fetch/getStoreId`)
       .then((data) => {
         console.log(data);
         socket.emit("storeId", data.sid);
@@ -59,7 +60,7 @@
 
     for (let i = 0; i < orderSubmit.length; i++) {
       orderSubmit[i].addEventListener("click", () => {
-        postData("http://127.0.0.1:3000/store/fetch/completedOrder", { [i]: 1 })
+        postData(`${Host}/store/fetch/completedOrder`, { [i]: 1 })
           .then((data) => {
             container[i].remove();
             socket.emit("completeOrder", data.accountId);
