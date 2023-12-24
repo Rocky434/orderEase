@@ -24,7 +24,7 @@ app.use(session({
   saveUninitialized: false, //是否為每次請求都設置一个cookie用來存儲session的id
   resave: true, //是否在每次請求時重新保存session
   store: MongoStore.create({
-    mongoUrl: `mongodb://${DBHOST}:${DBPOST}/${DBNAME}` //數據庫的連接配置
+    mongoUrl: `mongodb+srv://admin:admin@cluster0.nljuumr.mongodb.net/?retryWrites=true&w=majority` //數據庫的連接配置
   }),
   cookie: {
     httpOnly: true, // 開啟後前端無法通過 JS 操作

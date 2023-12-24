@@ -3,11 +3,12 @@ const router = express.Router();
 const Middleware = require('../models/middleware');
 const { addOrderRecords, getOrderRecords } = require('../models/orderRecords');
 
+
 // 訂餐紀錄頁面
 router.get('/fetch/addOrder', Middleware.checkLoginMiddleware, (req, res, next) => {
     addOrderRecords(req)
         .then((orderId) => {
-            res.json({ url: "http://127.0.0.1:3000/Records", orderId });
+            res.json({ url: `Records`, orderId });
         }).catch((err) => {
             console.log(err);
         });

@@ -50,6 +50,7 @@ const createAccount = (account, password) => {
 const handleSuccess = (page) => {
     message.page = page;
 }
+
 // 失敗處理，接收失敗後顯示的頁面資訊，有錯誤訊息與錯誤狀態。
 const handleError = (error, page) => {
     message.page = page;
