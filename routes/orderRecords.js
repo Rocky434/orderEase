@@ -19,8 +19,7 @@ router.get('/fetch/decreaseOrderTime', Middleware.checkLoginMiddleware, (req, re
 });
 
 router.get('/Records', Middleware.checkLoginMiddleware, (req, res, next) => {
-    const Url = process.env.RAILWAY_URL || "http://127.0.0.1:3000"; // 使用 Railway URL 或者默認的本地 URL
-
+    const Url = `https://${process.env.RAILWAY_URL}` || "http://127.0.0.1:3000"; // 使用 Railway URL 或者默認的本地 URL
     getOrderRecords(req)
         .then((orderRecords) => {
             let currentTime = new Date();
