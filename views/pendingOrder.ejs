@@ -42,7 +42,7 @@
   <script>
     let orderSubmit = document.getElementsByClassName("submit");
     let container = document.getElementsByClassName("container");
-    const Url = process.env.RAILWAY_URL || "http://127.0.0.1:3000"; // 使用 Railway URL 或者默認的本地 URL
+    let Url = `<%=Url%>`;
     const socket = io(Url);
     socket.on("reloadPendingOrder", () => {
       console.log("get");

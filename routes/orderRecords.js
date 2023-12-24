@@ -13,14 +13,18 @@ router.get('/fetch/addOrder', Middleware.checkLoginMiddleware, (req, res, next) 
             console.log(err);
         });
 });
+
 router.get('/fetch/decreaseOrderTime', Middleware.checkLoginMiddleware, (req, res, next) => {
     res.redirect('/Records');
 });
+
 router.get('/Records', Middleware.checkLoginMiddleware, (req, res, next) => {
+    const Url = process.env.RAILWAY_URL || "http://127.0.0.1:3000"; // 使用 Railway URL 或者默認的本地 URL
+
     getOrderRecords(req)
         .then((orderRecords) => {
             let currentTime = new Date();
-            res.render('orderRecords', { orderRecords, currentTime });
+            res.render('orderRecords', { orderRecords, currentTime, Url });
         }).catch((err) => {
 
         });

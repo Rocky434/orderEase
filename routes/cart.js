@@ -5,7 +5,8 @@ let Middleware = require('../models/middleware');
 // 購物車頁面
 router.get('/cart', Middleware.checkLoginMiddleware, (req, res) => {
     res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
-    res.render('cart');
+    const Url = process.env.RAILWAY_URL || "http://127.0.0.1:3000"; // 使用 Railway URL 或者默認的本地 URL
+    res.render('cart', Url);
 });
 
 // 前端獲取session的cart資料。

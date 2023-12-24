@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const Middleware = require('../models/middleware');
 const { completedOrder, getCompletedOrderRecords, getPendingOrderRecords } = require('../models/store');
+const Url = process.env.RAILWAY_URL || "http://127.0.0.1:3000"; // 使用 Railway URL 或者默認的本地 URL
 
 router.get('/storeIndex', (req, res, next) => {
-    res.render('storeIndex', req.session.food);
+    res.render('storeIndex', { ...req.session.food, Url });
 })
 
 
@@ -24,7 +25,7 @@ router.get('/pendingOrder', (req, res, next) => {
         .then((orderRecords) => {
             let currentTime = new Date();
             res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
-            res.render('pendingOrder', { orderRecords, currentTime });
+            res.render('pendingOrder', { orderRecords, currentTime, Url });
         }).catch((err) => {
             console.log(err);
         });
