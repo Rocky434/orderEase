@@ -1,12 +1,23 @@
 const express = require('express');
 const router = express.Router();
 let Middleware = require('../models/middleware');
+const { addOrderRecords } = require('../models/orderRecords');
 
-// 購物車頁面
+// 渲染購物車頁面，設定無快取，在按上一頁時需重新跟發伺服器請求。
 router.get('/cart', Middleware.checkLoginMiddleware, (req, res) => {
     res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
-    const Url = `https://${process.env.RAILWAY_URL}` || "http://127.0.0.1:3000"; // 使用 Railway URL 或者默認的本地 URL
+    const Url = (process.env.RAILWAY_URL) ? `https://${process.env.RAILWAY_URL}` : "http://127.0.0.1:3000"; // 使用 Railway URL 或者默認的本地 URL
     res.render('cart', { Url });
+});
+
+//新增訂單，將訂單存在客戶與店家資料庫中。
+router.post('/fetch/cart/order', Middleware.checkLoginMiddleware, (req, res, next) => {
+    addOrderRecords(req)
+        .then((orderId) => {
+            res.json({ url: `Records`, orderId });
+        }).catch((err) => {
+            console.log(err);
+        });
 });
 
 // 前端獲取session的cart資料。
@@ -16,8 +27,8 @@ router.get('/fetch/cart', Middleware.checkLoginMiddleware, (req, res, next) => {
     res.json(req.session.cart);
 });
 
-// 獲取餐點內容，傳回Session的cart資料庫。
-router.post('/fetch/cart', Middleware.checkLoginMiddleware, (req, res, next) => {
+// 將餐點內容傳給Session的cart資料集。
+router.put('/fetch/cart', Middleware.checkLoginMiddleware, (req, res, next) => {
     const { body } = req;
     const { cart } = req.session;
 
@@ -39,4 +50,5 @@ router.post('/fetch/cart', Middleware.checkLoginMiddleware, (req, res, next) => 
 
     res.json(req.session.cart);
 });
+
 module.exports = router;

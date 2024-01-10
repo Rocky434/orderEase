@@ -2,13 +2,14 @@ const express = require('express');
 const router = express.Router();
 const Middleware = require('../models/middleware');
 const { completedOrder, getCompletedOrderRecords, getPendingOrderRecords } = require('../models/store');
-const Url = `https://${process.env.RAILWAY_URL}` || "http://127.0.0.1:3000"; // 使用 Railway URL 或者默認的本地 URL
+const Url = (process.env.RAILWAY_URL) ? `https://${process.env.RAILWAY_URL}` : "http://127.0.0.1:3000"; // 使用 Railway URL 或者默認的本地 URL
 
+//渲染店家的首頁
 router.get('/storeIndex', (req, res, next) => {
     res.render('storeIndex', { ...req.session.food, Url });
 })
 
-
+//渲染店家的歷史訂單紀錄，且設定無快取。
 router.get('/storeOrderRecord', (req, res, next) => {
     getCompletedOrderRecords(req)
         .then((orderRecords) => {
@@ -20,6 +21,7 @@ router.get('/storeOrderRecord', (req, res, next) => {
         });
 });
 
+//渲染店家訂單處理頁面，且設定無快取。
 router.get('/pendingOrder', (req, res, next) => {
     getPendingOrderRecords(req)
         .then((orderRecords) => {
@@ -31,16 +33,18 @@ router.get('/pendingOrder', (req, res, next) => {
         });
 });
 
+//給予StoreId
 router.get('/fetch/getStoreId', (req, res, next) => {
     res.json(req.session);
 });
 
-router.post('/fetch/completedOrder', (req, res, next) => {
+//當訂單完成，設定expiration為false，以代表訂單已處理完成。
+router.put('/fetch/completedOrder', (req, res, next) => {
     const { body } = req;
     const key = Object.keys(body);
     completedOrder(req)
         .then((orderRecords) => {
-            console.log("0   " + orderRecords.accountId);
+            console.log("訂單交易完成");
             res.json(orderRecords);
         }).catch((err) => {
             console.log(err);

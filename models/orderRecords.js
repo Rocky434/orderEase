@@ -57,13 +57,13 @@ function addOrderRecords(req) {
                     }
                     orderRecordsModel.create({ ...newOrder, accountId: req.session.sid })
                         .then((result) => {
-                            console.log("订单创建成功");
+                            console.log("訂單創建成功");
                             req.session.orderRecords.push(newOrder);
                             foundAccount.OrderRecords.push(newOrder);
                             return foundAccount.save(); // 保存用户账户信息
                         })
                         .then(() => {
-                            console.log("用户账户信息保存成功");
+                            console.log("用戶帳戶信息保存成功");
                             resolve(newOrder);
                         })
                         .catch((err) => {

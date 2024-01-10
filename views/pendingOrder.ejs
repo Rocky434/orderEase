@@ -60,7 +60,7 @@
 
     for (let i = 0; i < orderSubmit.length; i++) {
       orderSubmit[i].addEventListener("click", () => {
-        postData(`${Url}/store/fetch/completedOrder`, { [i]: 1 })
+        putData(`${Url}/store/fetch/completedOrder`, { [i]: 1 })
           .then((data) => {
             container[i].remove();
             socket.emit("completeOrder", data.accountId);
@@ -70,7 +70,7 @@
       });
     }
 
-    function postData(url, data) {
+    function putData(url, data) {
       // Default options are marked with *
       return fetch(url, {
         body: JSON.stringify(data), // must match 'Content-Type' header
@@ -80,7 +80,7 @@
           "user-agent": "Mozilla/4.0 MDN Example",
           "content-type": "application/json",
         },
-        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        method: "PUT", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, cors, *same-origin
         redirect: "follow", // manual, *follow, error
         referrer: "no-referrer", // *client, no-referrer
