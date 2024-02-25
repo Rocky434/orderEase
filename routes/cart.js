@@ -10,7 +10,7 @@ router.get('/cart', Middleware.checkLoginMiddleware, (req, res) => {
     res.render('cart', { Url });
 });
 
-//新增訂單，將訂單存在客戶與店家資料庫中。
+// 提交購物車時執行，新增訂單，將訂單存在客戶與店家資料庫中。
 router.post('/fetch/cart/order', Middleware.checkLoginMiddleware, (req, res, next) => {
     addOrderRecords(req)
         .then((orderId) => {
@@ -27,8 +27,8 @@ router.get('/fetch/cart', Middleware.checkLoginMiddleware, (req, res, next) => {
     res.json(req.session.cart);
 });
 
-// 將餐點內容傳給Session的cart資料集。
-router.put('/fetch/cart', Middleware.checkLoginMiddleware, (req, res, next) => {
+// 當購物車內的餐點數量有變動時執行，將餐點內容傳給Session的cart資料集。
+router.patch('/fetch/cart', Middleware.checkLoginMiddleware, (req, res, next) => {
     const { body } = req;
     const { cart } = req.session;
 

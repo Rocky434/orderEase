@@ -97,7 +97,7 @@
 
       for (let i = 0; i < addbtn.length; i++) {
         addbtn[i].addEventListener("click", () => {
-          putData(`${Url}/fetch/cart`, { [i]: 1 })
+          patchData(`${Url}/fetch/cart`, { [i]: 1 })
             .then((data) => {
               keys = Object.keys(data);
               values = Object.values(data);
@@ -109,7 +109,7 @@
 
       for (let i = 0; i < addbtn.length; i++) {
         decrementbtn[i].addEventListener("click", () => {
-          putData(`${Url}/fetch/cart`, { [i]: -1 })
+          patchData(`${Url}/fetch/cart`, { [i]: -1 })
             .then((data) => {
               keys = Object.keys(data);
               values = Object.values(data);
@@ -136,7 +136,7 @@
         }).then((response) => response.json()); // 輸出成 json
       }
 
-      function putData(url, data) {
+      function patchData(url, data) {
         // Default options are marked with *
         return fetch(url, {
           body: JSON.stringify(data), // must match 'Content-Type' header
@@ -146,7 +146,7 @@
             "user-agent": "Mozilla/4.0 MDN Example",
             "content-type": "application/json",
           },
-          method: "PUT", // *GET, POST, PUT, DELETE, etc.
+          method: "PATCH", // *GET, POST, PUT, DELETE, etc.
           mode: "cors", // no-cors, cors, *same-origin
           redirect: "follow", // manual, *follow, error
           referrer: "no-referrer", // *client, no-referrer

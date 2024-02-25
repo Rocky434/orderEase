@@ -19,7 +19,7 @@ router.get('/index', Middleware.checkLoginMiddleware, (req, res) => {
 });
 
 // 獲取餐點內容，傳回Session的food資料庫。
-router.post('/fetch/index', (req, res, next) => {
+router.patch('/fetch/index', (req, res, next) => {
   const { body } = req;
   const keys = Object.keys(body);
   const value = parseInt(Object.values(body));
@@ -35,10 +35,5 @@ router.post('/fetch/index', (req, res, next) => {
   }
   res.json(req.session.food);
 });
-
-
-
-
-
 
 module.exports = router;  

@@ -1,19 +1,18 @@
-# 使用 Node.js 官方镜像作为基础镜像
+# 使用 Node.js 官方境像做為基礎境像
 FROM node:latest
 
-# 设置工作目录
+# 設置工作目錄
 WORKDIR /usr/src/app
 
-# 复制 package.json 和 package-lock.json（如果存在）
+# 複製 package.json 和 package-lock.json 
 COPY package*.json ./
 
-# 安装依赖
+# 安裝依賴包
 RUN npm install
 
-# 将项目文件复制到镜像中
+# 將資料傳到境象中
 COPY . .
 
-# 暴露端口（如果你的应用使用了某个端口，替换 3000 为你的实际端口）
 EXPOSE 3000
 
 # 启动应用

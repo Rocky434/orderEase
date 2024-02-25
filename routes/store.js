@@ -39,7 +39,7 @@ router.get('/fetch/getStoreId', (req, res, next) => {
 });
 
 //當訂單完成，設定expiration為false，以代表訂單已處理完成。
-router.put('/fetch/completedOrder', (req, res, next) => {
+router.patch('/fetch/completedOrder', (req, res, next) => {
     const { body } = req;
     const key = Object.keys(body);
     completedOrder(req)
