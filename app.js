@@ -12,7 +12,7 @@ const Middleware = require('./models/middleware');
 const session = require("express-session");
 const MongoStore = require('connect-mongo');
 const cors = require('cors');
-const { DBHOST, DBPOST, DBNAME } = require('./config/config');
+const { URI } = require('./config/config');
 
 var app = express();
 

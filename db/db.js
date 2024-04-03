@@ -1,6 +1,6 @@
 module.exports = function db() {
     const mongoose = require('mongoose');
-    const { DBHOST, DBPOST, DBNAME } = require('../config/config');
+    const { URI } = require('../config/config');
     return new Promise((resolve, reject) => {
         mongoose.connect(URI);
         mongoose.connection.once('open', () => {
