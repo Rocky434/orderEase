@@ -2,7 +2,7 @@ module.exports = function db() {
     const mongoose = require('mongoose');
     const { DBHOST, DBPOST, DBNAME } = require('../config/config');
     return new Promise((resolve, reject) => {
-        mongoose.connect(`mongodb+srv://admin:admin@cluster0.nljuumr.mongodb.net/?retryWrites=true&w=majority`);
+        mongoose.connect(URI);
         mongoose.connection.once('open', () => {
             console.log('成功連接數據庫');
             resolve();
