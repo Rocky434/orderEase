@@ -11,13 +11,13 @@ router.get('/cart', Middleware.checkLoginMiddleware, (req, res) => {
 });
 
 // 提交購物車時執行，新增訂單，將訂單存在客戶與店家資料庫中。
-router.post('/fetch/cart/order', Middleware.checkLoginMiddleware, (req, res, next) => {
-    addOrderRecords(req)
-        .then((orderId) => {
-            res.json({ url: `Records`, orderId });
-        }).catch((err) => {
-            console.log(err);
-        });
+router.post('/fetch/cart/order', Middleware.checkLoginMiddleware, async (req, res, next) => {
+    try {
+        await addOrderRecords(req);
+        res.json({ url: `Records` });
+    } catch (error) {
+        console.log(error);
+    }
 });
 
 // 前端獲取session的cart資料。

@@ -8,15 +8,19 @@ let checkLoginMiddleware = (req, res, next) => {
     }
     next();
 }
+
+// 識別是否為店家帳戶。
 let checkIsStoreMiddleware = (req, res, next) => {
     if (!req.session.sid) {
-        return res.redirect('/login');
+        return res.redirect('/login')
     }
     else if (req.session.sid !== '658452b31576e44088148cc6') {
         return res.redirect('/error');
     }
     next();
 }
+
+
 module.exports = {
     checkLoginMiddleware,
     checkIsStoreMiddleware

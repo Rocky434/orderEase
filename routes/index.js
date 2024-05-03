@@ -1,8 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const shortid = require('shortid');
-const fs = require('fs');
-const path = require('path');
 let Middleware = require('../models/middleware');
 
 // 跳轉到首頁
@@ -14,7 +11,6 @@ router.get('/', Middleware.checkLoginMiddleware, (req, res, next) => {
 router.get('/index', Middleware.checkLoginMiddleware, (req, res) => {
   const Url = (process.env.RAILWAY_URL) ? `https://${process.env.RAILWAY_URL}` : "http://127.0.0.1:3000"; // 使用 Railway URL 或者默認的本地 URL
   res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
-  console.log('後端url: ' + Url);
   res.render('index', { ...req.session.food, Url });
 });
 

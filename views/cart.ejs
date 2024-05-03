@@ -87,7 +87,6 @@
         postData(`${Url}/fetch/cart/order`)
           .then((res) => {
             socket.emit("addOrder");
-            console.log(res.orderId);
             window.location.href = res.url; // 页面重定向到根路径
           })
           .catch((error) => {

@@ -3,12 +3,15 @@
 /**
  * Module dependencies.
  */
+
+require('dotenv').config(); //將.env的環境變數加載到Node.js 的 process.env 中。
 const db = require('../db/db');
 db()
   .then(() => {
-    var app = require('../app');
-    var debug = require('debug')('login:server');
-    var http = require('http');
+    let app = require('../app');
+    let debug = require('debug')('login:server');
+    let http = require('http');
+
     const socketIo = require('socket.io');
 
     /**
@@ -65,6 +68,7 @@ db()
 
       });
     });
+
     /**
         * Listen on provided port, on all network interfaces.
     */

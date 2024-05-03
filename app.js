@@ -12,7 +12,8 @@ const Middleware = require('./models/middleware');
 const session = require("express-session");
 const MongoStore = require('connect-mongo');
 const cors = require('cors');
-const { URI } = require('./config/config');
+
+const { URI } = process.env;
 
 var app = express();
 
