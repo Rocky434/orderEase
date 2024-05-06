@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/stylesheets/style.css" />
+    <script src="javascripts/fetch.js"></script>
     <title>Document</title>
   </head>
   <body>
@@ -120,69 +121,9 @@
     </div>
   </body>
   <script>
-    //#region 存Salad值到localStorage
-    // let addbtn = document.getElementsByClassName("addbtn");
-    // let num = document.getElementById("foodnum");
-    // let decrementbtn = document.getElementById("decrementbtn");
-    // if (Number(localStorage.getItem("Salad")) > 0) {
-    //   num.innerHTML = String(localStorage.getItem("Salad"));
-    // }
-
-    // addbtn.addEventListener("click", () => {
-    //   // 將 innerHTML 轉換為數字，進行加法運算後再轉回字串
-    //   num.innerHTML = String(Number(num.innerHTML) + 1);
-    //   // 將更新後的值存儲在 sessionStorage
-    //   localStorage.setItem("Salad", num.innerHTML);
-    // });
-
-    // decrementbtn.addEventListener("click", () => {
-    //   // 將 innerHTML 轉換為數字，進行加法運算後再轉回字串
-    //   if (Number(num.innerHTML) - 1 >= 0) {
-    //     num.innerHTML = String(Number(num.innerHTML) - 1);
-    //     localStorage.setItem("Salad", num.innerHTML);
-    //   }
-    //   if (localStorage.getItem("Salad") <= 0) localStorage.clear("Salad");
-
-    //   // 將更新後的值存儲在 sessionStorage
-    // });
-    //#endregion
-
-    // region 本地儲存方法
-    // let keys = Object.keys(localStorage);
-    // let values = Object.values(localStorage);
-    // let foods = ["Salad", "Steak", "Salmon"];
-    // for (let i = 0; i < addbtn.length; i++) {
-    //   if (values[i] > 0) {
-    //     if (keys[i] === "Salad") {
-    //       num[0].innerHTML = String(values[i]);
-    //     } else if (keys[i] === "Steak") {
-    //       num[1].innerHTML = String(values[i]);
-    //     } else if (keys[i] === "Salmon") {
-    //       num[2].innerHTML = String(values[i]);
-    //     }
-    //   }
-    //   addbtn[i].addEventListener("click", () => {
-    //     num[i].innerHTML = String(Number(num[i].innerHTML) + 1);
-    //     localStorage.setItem(foods[i], num[i].innerHTML);
-    //   });
-    // }
-    // for (let i = 0; i < decrementbtn.length; i++) {
-    //   decrementbtn[i].addEventListener("click", () => {
-    //     if (Number(num[i].innerHTML) - 1 >= 0) {
-    //       num[i].innerHTML = String(Number(num[i].innerHTML) - 1);
-    //       localStorage.setItem(foods[i], num[i].innerHTML);
-    //     }
-    //     if (num[i].innerHTML <= 0) {
-    //       localStorage.removeItem(foods[i]);
-    //     }
-    //   });
-    // }
-    // endregion
-
     let addbtn = document.getElementsByClassName("addbtn");
     let decrementbtn = document.getElementsByClassName("decrementbtn");
     let num = document.getElementsByClassName("foodnum");
-    let logout = document.getElementById("logout");
     let foods = ["salad", "steak", "salmon"];
     let Url = `<%=Url%>`;
     for (let i = 0; i < addbtn.length; i++) {
@@ -200,26 +141,5 @@
           .catch((error) => console.log(error));
       });
     }
-
-    function patchData(url, data) {
-      // Default options are marked with *
-      return fetch(url, {
-        body: JSON.stringify(data), // must match 'Content-Type' header
-        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: "same-origin", // include, same-origin, *omit
-        headers: {
-          "user-agent": "Mozilla/4.0 MDN Example",
-          "content-type": "application/json",
-        },
-        method: "PATCH", // *GET, POST, PUT, DELETE, etc.
-        mode: "cors", // no-cors, cors, *same-origin
-        redirect: "follow", // manual, *follow, error
-        referrer: "no-referrer", // *client, no-referrer
-      }).then((response) => response.json()); // 輸出成 json
-    }
-
-    logout.addEventListener("click", () => {
-      localStorage.clear();
-    });
   </script>
 </html>

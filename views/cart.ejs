@@ -6,6 +6,7 @@
     <script src="https://cdn.jsdelivr.net/npm/socket.io-client/dist/socket.io.js"></script>
     <link rel="stylesheet" href="stylesheets/cart.css" />
     <title>Document</title>
+    <script src="javascripts/fetch.js"></script>
   </head>
   <body>
     <div class="list" id="list"></div>
@@ -18,7 +19,6 @@
     const socket = io(Url);
     getFetch(`${Url}/fetch/cart`)
       .then((data) => {
-        console.log(data); // 确认是否能打印出返回的数据
         keys = Object.keys(data);
         values = Object.values(data);
         reRender();
@@ -32,53 +32,56 @@
 
     function reRender() {
       let check = 0;
-      console.log("exercise rerender");
-      if (keys.length > 0) {
+      let validList = [];
+      for (let i = 0; i < values.length; i++) {
+        if (values[i][0] > 0) validList.push(i);
+      }
+      if (validList.length > 0) {
         let listHtml = `
-        </div>`;
-        for (let i = 0; i < keys.length; i++) {
-          check += values[i][0] * values[i][1];
+            </div>`;
+        for (let i = 0; i < validList.length; i++) {
+          let index = validList[i];
+          check += values[index][0] * values[index][1];
           listHtml += `<div class="ob">
-          <span class="foodname" >${keys[i]}</span>
-          <button class="decrementbtn" id="decrementbtn">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="1em"
-              viewBox="0 0 448 512"
-            >
-              <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
-              <path
-                d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"
-              />
-            </svg>
-          </button>
-          <span class="foodnum" id="foodnum">${values[i][0]}</span>
-          <button class="addbtn" id="addbtn">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="1em"
-              viewBox="0 0 448 512"
-            >
-              <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
-              <path
-                d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"
-              />
-            </svg>
-          </button>
-        </div>`;
+              <span class="foodname" >${keys[index]}</span>
+              <button class="decrementbtn" id="decrementbtn">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="1em"
+                  viewBox="0 0 448 512"
+                >
+                  <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                  <path
+                    d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"
+                  />
+                </svg>
+              </button>
+              <span class="foodnum" id="foodnum">${values[index][0]}</span>
+              <button class="addbtn" id="addbtn">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="1em"
+                  viewBox="0 0 448 512"
+                >
+                  <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                  <path
+                    d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"
+                  />
+                </svg>
+              </button>
+            </div>`;
         }
         listHtml += `
-        <div class="line">
-        <div class="list_topbar">
-        <span>${keys.length}項商品</span>
-        <span>小計:$${check}</span>
-        </div>
-        <button id="submit">提交訂單</button>`;
+            <div class="line">
+            <div class="list_topbar">
+            <span>${validList.length}項商品</span>
+            <span>小計:$${check}</span>
+            </div>
+            <button id="submit">提交訂單</button>`;
         list.innerHTML = listHtml; // 設置 innerHTML
       } else {
         list.innerHTML = "";
       }
-
       let addbtn = document.getElementsByClassName("addbtn");
       let decrementbtn = document.getElementsByClassName("decrementbtn");
       let submit = document.getElementById("submit");
@@ -96,7 +99,8 @@
 
       for (let i = 0; i < addbtn.length; i++) {
         addbtn[i].addEventListener("click", () => {
-          patchData(`${Url}/fetch/cart`, { [i]: 1 })
+          // 傳遞字面量動態名稱要用[]包起來
+          patchData(`${Url}/fetch/cart`, { [validList[i]]: 1 })
             .then((data) => {
               keys = Object.keys(data);
               values = Object.values(data);
@@ -108,7 +112,8 @@
 
       for (let i = 0; i < addbtn.length; i++) {
         decrementbtn[i].addEventListener("click", () => {
-          patchData(`${Url}/fetch/cart`, { [i]: -1 })
+          // 傳遞字面量動態名稱要用[]包起來
+          patchData(`${Url}/fetch/cart`, { [validList[i]]: -1 })
             .then((data) => {
               keys = Object.keys(data);
               values = Object.values(data);
@@ -117,81 +122,6 @@
             .catch((error) => console.log(error));
         });
       }
-
-      function postData(url, data) {
-        // Default options are marked with *
-        return fetch(url, {
-          body: JSON.stringify(data), // must match 'Content-Type' header
-          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-          credentials: "same-origin", // include, same-origin, *omit
-          headers: {
-            "user-agent": "Mozilla/4.0 MDN Example",
-            "content-type": "application/json",
-          },
-          method: "POST", // *GET, POST, PUT, DELETE, etc.
-          mode: "cors", // no-cors, cors, *same-origin
-          redirect: "follow", // manual, *follow, error
-          referrer: "no-referrer", // *client, no-referrer
-        }).then((response) => response.json()); // 輸出成 json
-      }
-
-      function patchData(url, data) {
-        // Default options are marked with *
-        return fetch(url, {
-          body: JSON.stringify(data), // must match 'Content-Type' header
-          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-          credentials: "same-origin", // include, same-origin, *omit
-          headers: {
-            "user-agent": "Mozilla/4.0 MDN Example",
-            "content-type": "application/json",
-          },
-          method: "PATCH", // *GET, POST, PUT, DELETE, etc.
-          mode: "cors", // no-cors, cors, *same-origin
-          redirect: "follow", // manual, *follow, error
-          referrer: "no-referrer", // *client, no-referrer
-        }).then((response) => response.json()); // 輸出成 json
-      }
-
-      // let addbtn = document.getElementsByClassName("addbtn");
-      // let num = document.getElementsByClassName("foodnum");
-      // let decrementbtn = document.getElementsByClassName("decrementbtn");
-
-      // for (let i = 0; i < addbtn.length; i++) {
-      //   addbtn[i].addEventListener("click", () => {
-      //     num[i].innerHTML = String(Number(num[i].innerHTML) + 1);
-      //     localStorage.setItem(keys[i], num[i].innerHTML);
-      //   });
-      // }
-      // for (let i = 0; i < decrementbtn.length; i++) {
-      //   decrementbtn[i].addEventListener("click", () => {
-      //     if (Number(num[i].innerHTML) - 1 >= 0) {
-      //       num[i].innerHTML = String(Number(num[i].innerHTML) - 1);
-      //       localStorage.setItem(keys[i], num[i].innerHTML);
-      //     }
-
-      //     if (Number(num[i].innerHTML) < 1) {
-      //       localStorage.removeItem(keys[i]);
-      //       reRender();
-      //       num = document.getElementsByClassName("foodnum");
-      //     } else {
-      //     }
-      //   });
-      // }
-    }
-
-    function getFetch(url) {
-      return fetch(url, {
-        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: "same-origin", // include, same-origin, *omit
-        headers: {
-          "user-agent": "Mozilla/4.0 MDN Example",
-          "content-type": "application/json",
-        },
-        method: "GET",
-        mode: "cors", // no-cors, cors, *same-origin
-        redirect: "follow", // manual, *follow, error
-        referrer: "no-referrer", // *client, no-referrer
-      }).then((response) => response.json());
     }
   </script>
 </html>

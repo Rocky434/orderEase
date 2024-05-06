@@ -25,13 +25,14 @@ async function findAccountBySessionId(req) {
 async function addOrderRecords(req) {
     const account = await findAccountBySessionId(req);
 
-    const cart = req.session.cart;
-    const foods = Object.entries(cart).map(([foodName, [foodQuantity, foodPrice]]) => ({
-        foodsName: foodName,
-        quantity: foodQuantity,
-        price: foodPrice * foodQuantity
-
-    }));
+    const food = req.session.food;
+    // 過濾數量為0的餐點，訂製純餐點訂單。
+    const foods = Object.entries(food).filter(([foodName, [foodQuantity, foodPrice]]) => foodQuantity !== 0)
+        .map(([foodName, [foodQuantity, foodPrice]]) => ({
+            foodsName: foodName,
+            quantity: foodQuantity,
+            price: foodPrice * foodQuantity
+        }));
 
     const totalQuantity = foods.reduce((acc, food) => acc + food.quantity, 0);
     const amount = foods.reduce((acc, food) => acc + food.price, 0);
@@ -47,12 +48,11 @@ async function addOrderRecords(req) {
         expirationTime: new Date(Date.now() + 5 * 60 * 1000),
         expiration: false
     };
+
     const createdOrder = await orderRecordsModel.create(newOrder);
     account.OrderRecords.push(createdOrder);
     await account.save();
 
-
-    console.log('Order created and account updated successfully');
     return createdOrder;
 }
 

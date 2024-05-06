@@ -3,7 +3,7 @@ let checkLoginMiddleware = (req, res, next) => {
     if (!req.session.sid) {
         return res.redirect('/login');
     }
-    if (req.session.sid === '658452b31576e44088148cc6') {
+    if (req.session.sid === '663887bdc1c7bdcfb4178f8d') {
         return res.redirect('/store/storeIndex');
     }
     next();
@@ -14,7 +14,7 @@ let checkIsStoreMiddleware = (req, res, next) => {
     if (!req.session.sid) {
         return res.redirect('/login')
     }
-    else if (req.session.sid !== '658452b31576e44088148cc6') {
+    else if (req.session.sid !== '663887bdc1c7bdcfb4178f8d') {
         return res.redirect('/error');
     }
     next();

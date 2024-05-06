@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/stylesheets/orderRecords.css" />
     <script src="https://cdn.jsdelivr.net/npm/socket.io-client/dist/socket.io.js"></script>
+    <script src="/javascripts/fetch.js"></script>
     <title>Document</title>
   </head>
   <body>
@@ -13,7 +14,7 @@
       <a href="/store/storeOrderRecord" class="orderRecords">歷史訂單</a>
     </div>
     <div class="topbar">待處理訂單</div>
-    <% if(orderRecords){%> <%orderRecords.reverse().forEach((order) => {%>
+    <% if(pendingOrders){%> <%pendingOrders.reverse().forEach((order) => {%>
     <div class="container">
       <div class="content">
         <div class="dishCount">
@@ -45,13 +46,11 @@
     let Url = `<%=Url%>`;
     const socket = io(Url);
     socket.on("reloadPendingOrder", () => {
-      console.log("get");
       location.reload();
     });
 
     getFetch(`${Url}/store/fetch/getStoreId`)
       .then((data) => {
-        console.log(data);
         socket.emit("storeId", data.sid);
       })
       .catch((err) => {
@@ -60,7 +59,7 @@
 
     for (let i = 0; i < orderSubmit.length; i++) {
       orderSubmit[i].addEventListener("click", () => {
-        patchData(`${Url}/store/fetch/completedOrder`, { [i]: 1 })
+        patchData(`${Url}/store/fetch/setCompletedOrder`, { [i]: 1 })
           .then((data) => {
             container[i].remove();
             socket.emit("completeOrder", data.accountId);
@@ -68,38 +67,6 @@
           }) // JSON from `response.json()` call
           .catch((error) => console.log(error));
       });
-    }
-
-    function patchData(url, data) {
-      // Default options are marked with *
-      return fetch(url, {
-        body: JSON.stringify(data), // must match 'Content-Type' header
-        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: "same-origin", // include, same-origin, *omit
-        headers: {
-          "user-agent": "Mozilla/4.0 MDN Example",
-          "content-type": "application/json",
-        },
-        method: "PATCH", // *GET, POST, PUT, DELETE, etc.
-        mode: "cors", // no-cors, cors, *same-origin
-        redirect: "follow", // manual, *follow, error
-        referrer: "no-referrer", // *client, no-referrer
-      }).then((response) => response.json()); // 輸出成 json
-    }
-
-    function getFetch(url) {
-      return fetch(url, {
-        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: "same-origin", // include, same-origin, *omit
-        headers: {
-          "user-agent": "Mozilla/4.0 MDN Example",
-          "content-type": "application/json",
-        },
-        method: "GET",
-        mode: "cors", // no-cors, cors, *same-origin
-        redirect: "follow", // manual, *follow, error
-        referrer: "no-referrer", // *client, no-referrer
-      }).then((response) => response.json());
     }
   </script>
 </html>

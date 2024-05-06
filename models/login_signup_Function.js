@@ -26,8 +26,6 @@ const loginUser = async (req) => {
 // 創建session，設定session.id與accountid一致。
 const createSession = async (req, accountId) => {
     req.session.sid = accountId;
-    console.log(req.session.sid);
-    req.session.cart = {};
     req.session.food = { salad: [0, 60], steak: [0, 220], salmon: [0, 250] };
 }
 

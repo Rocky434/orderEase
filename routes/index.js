@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 let Middleware = require('../models/middleware');
+const { updataCartItemQuentity } = require('../models/updateSession');
+
 
 // 跳轉到首頁
 router.get('/', Middleware.checkLoginMiddleware, (req, res, next) => {
@@ -15,20 +17,8 @@ router.get('/index', Middleware.checkLoginMiddleware, (req, res) => {
 });
 
 // 獲取餐點內容，傳回Session的food資料庫。
-router.patch('/fetch/index', (req, res, next) => {
-  const { body } = req;
-  const keys = Object.keys(body);
-  const value = parseInt(Object.values(body));
-  if (req.session.food[keys][0] + value >= 0) {
-    req.session.food[keys][0] += value;
-    if (req.session.food[keys][0] > 0) {
-      if (!req.session.cart[keys]) {
-        req.session.cart[keys] = [];
-      }
-      req.session.cart[keys][0] = req.session.food[keys][0];
-      req.session.cart[keys][1] = req.session.food[keys][1];
-    }
-  }
+router.patch('/fetch/index', async (req, res, next) => {
+  await updataCartItemQuentity(req);
   res.json(req.session.food);
 });
 
