@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const login_signup_Function = require('../models/login_signup_function');
+const login_signup_Function = require('../models/login_signup');
 
 // 註冊頁面，使帳號密碼為空。
 router.get('/signUp', (req, res) => {

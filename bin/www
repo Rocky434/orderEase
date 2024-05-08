@@ -138,6 +138,6 @@ db()
       debug('Listening on ' + bind);
     }
   })
-  .catch(() => {
-
+  .catch((error) => {
+    console.log(error);
   })
