@@ -7,18 +7,7 @@ async function updataCartItemQuentity(req) {
     //req.session.food : { salad: [0, 60], steak: [0, 220], salmon: [0, 250] } req.session.food.Value[0]是數量，value[1]是價格;
     // 避免負數
     if (req.session.food[foodName][0] + value >= 0) {
-
         req.session.food[foodName][0] += value;
-
-        if (req.session.food[foodName][0] > 0) {
-            // 第一次新增的食物，先新增數組後續才能存放資料。
-            if (!req.session.cart[foodName]) {
-                req.session.cart[foodName] = [];
-            }
-
-            req.session.cart[foodName][0] = req.session.food[foodName][0];
-            req.session.cart[foodName][1] = req.session.food[foodName][1];
-        }
     }
 }
 
