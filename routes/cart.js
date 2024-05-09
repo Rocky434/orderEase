@@ -3,6 +3,7 @@ const router = express.Router();
 let Middleware = require('../models/middleware');
 const { addOrderRecords } = require('../models/orderRecords');
 const { updateCartAndFoodItemQuentity } = require('../models/updateSession');
+const { setPayment, checkMacValue } = require('../models/ecpay')
 
 // 渲染購物車頁面，設定無快取，在按上一頁時需重新跟發伺服器請求。
 router.get('/cart', Middleware.checkLoginMiddleware, (req, res) => {
@@ -19,6 +20,32 @@ router.post('/fetch/cart/order', Middleware.checkLoginMiddleware, async (req, re
     } catch (error) {
         console.log(error);
     }
+});
+
+router.get('/fetch/payment', async (req, res) => {
+    html = setPayment();
+    res.render('index', {
+        title: 'Payment',
+        html
+    });
+});
+
+// payment
+router.post('/return', async (req, res) => {
+    // 驗證檢核碼
+    // 交易成功後，需要回傳 1|OK 給綠界
+    if (checkMacValue(req)) {
+        await addOrderRecords(req);
+        res.send('1|OK'); // 驗證通過，返回正確給綠界
+    } else {
+        res.send('0|Signature verification failed'); // 驗證失敗，返回錯誤給綠界
+    }
+});
+
+
+router.get('/clientReturn', (req, res) => {
+    console.log('clientReturn:', req.body, req.query);
+    res.redirect('Records');
 });
 
 // 前端獲取session的cart資料。
