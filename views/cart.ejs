@@ -87,14 +87,15 @@
       let submit = document.getElementById("submit");
 
       submit.addEventListener("click", () => {
-        getFetch(`${Url}/fetch/payment`)
+        window.location.href = "/payment";
+        /* getFetch(`${Url}/fetch/payment`)
           .then((res) => {
-            /* socket.emit("addOrder");
-            window.location.href = res.url; // 页面重定向到根路径 */
+            // socket.emit("addOrder");
+            // // 页面重定向到根路径
           })
           .catch((error) => {
             console.log(error);
-          });
+          }); */
       });
       /* submit.addEventListener("click", () => {
         postData(`${Url}/fetch/cart/order`)

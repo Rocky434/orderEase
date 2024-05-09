@@ -22,9 +22,9 @@ router.post('/fetch/cart/order', Middleware.checkLoginMiddleware, async (req, re
     }
 });
 
-router.get('/fetch/payment', async (req, res) => {
+router.get('/payment', async (req, res) => {
     html = setPayment();
-    res.render('index', {
+    res.render('payment', {
         title: 'Payment',
         html
     });
