@@ -3,10 +3,15 @@ const home = require('./home');
 const loginSignup = require('./loginSignup');
 const orderRecords = require('./orderRecords');
 const store = require('./store');
+const linepay = require('./linepay');
 const express = require('express');
 const router = express.Router();
 
 const routes = [
+    {
+        path: '/linepay',
+        route: linepay
+    },
     {
         path: '/cart',
         route: cart

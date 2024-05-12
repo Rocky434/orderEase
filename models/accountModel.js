@@ -30,7 +30,7 @@ let accountSchema = mongoose.Schema({
             required: true
         },
         foods: [{
-            foodsName: {
+            name: {
                 type: String,
                 required: true
             },

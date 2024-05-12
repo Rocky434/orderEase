@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Middleware = require('../middleware/identify');
 const cart_controller = require('../controllers/cart_controller')
+const linepay_controllers = require('../controllers/linepay_controllers')
 
 router
     .route('/')
@@ -9,7 +10,7 @@ router
 
 router
     .route('/fetch/order')
-    .post(Middleware.checkLogin, cart_controller.addOrderRecords)
+    .get(Middleware.checkLogin, linepay_controllers.linePayRequest)
 
 router
     .route('/fetch')
