@@ -1,16 +1,16 @@
 // 確認使用者有沒有session，來檢測是否登入，沒登入就自動重定向到登入頁面。
-let checkLoginMiddleware = (req, res, next) => {
+let checkLogin = (req, res, next) => {
     if (!req.session.sid) {
         return res.redirect('/login');
     }
     if (req.session.sid === '663887bdc1c7bdcfb4178f8d') {
-        return res.redirect('/store/storeIndex');
+        return res.redirect('/store/index');
     }
     next();
 }
 
 // 識別是否為店家帳戶。
-let checkIsStoreMiddleware = (req, res, next) => {
+let checkIsStore = (req, res, next) => {
     if (!req.session.sid) {
         return res.redirect('/login')
     }
@@ -22,6 +22,6 @@ let checkIsStoreMiddleware = (req, res, next) => {
 
 
 module.exports = {
-    checkLoginMiddleware,
-    checkIsStoreMiddleware
+    checkLogin,
+    checkIsStore
 }

@@ -1,6 +1,6 @@
 const { default: mongoose } = require('mongoose');
-const orderRecordsModel = require('./dbModel/orderRecordsModel');
-const accountModel = require('./dbModel/accountModel');
+const orderRecordsModel = require('../models/orderRecordsModel');
+const accountModel = require('../models/accountModel');
 async function getPendingOrderRecords() {
     const pendingOrders = await orderRecordsModel.find({ expiration: false });
     return pendingOrders;

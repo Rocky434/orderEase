@@ -1,6 +1,6 @@
 const { default: mongoose } = require('mongoose');
-const accountModel = require('./dbModel/accountModel');
-const orderRecordsModel = require('./dbModel/orderRecordsModel');
+const accountModel = require('../models/accountModel');
+const orderRecordsModel = require('../models/orderRecordsModel');
 const errors = require('../config/errorMessage')
 
 

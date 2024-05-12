@@ -17,7 +17,7 @@
     let values;
     let Url = `<%=Url%>`;
     const socket = io(Url);
-    getFetch(`${Url}/fetch/cart`)
+    getFetch(`${Url}/cart/fetch`)
       .then((data) => {
         keys = Object.keys(data);
         values = Object.values(data);
@@ -87,7 +87,7 @@
       let submit = document.getElementById("submit");
 
       submit.addEventListener("click", () => {
-        postData(`${Url}/fetch/cart/order`)
+        postData(`${Url}/cart/fetch/order`)
           .then((res) => {
             socket.emit("addOrder");
             window.location.href = res.url; // 页面重定向到根路径
@@ -100,7 +100,7 @@
       for (let i = 0; i < addbtn.length; i++) {
         addbtn[i].addEventListener("click", () => {
           // 傳遞字面量動態名稱要用[]包起來
-          patchData(`${Url}/fetch/cart`, { [validList[i]]: 1 })
+          patchData(`${Url}/cart/fetch`, { [validList[i]]: 1 })
             .then((data) => {
               keys = Object.keys(data);
               values = Object.values(data);
@@ -113,7 +113,7 @@
       for (let i = 0; i < addbtn.length; i++) {
         decrementbtn[i].addEventListener("click", () => {
           // 傳遞字面量動態名稱要用[]包起來
-          patchData(`${Url}/fetch/cart`, { [validList[i]]: -1 })
+          patchData(`${Url}/cart/fetch`, { [validList[i]]: -1 })
             .then((data) => {
               keys = Object.keys(data);
               values = Object.values(data);

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const accountModel = require('./dbModel/accountModel');
+const accountModel = require('../models/accountModel');
 const md5 = require('md5');
 const errors = require('../config/errorMessage')
 
