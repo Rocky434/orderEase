@@ -43,7 +43,10 @@
           let index = validList[i];
           check += values[index][0] * values[index][1];
           listHtml += `<div class="ob">
-              <span class="foodname" >${keys[index]}</span>
+              <div class="foodcontainer">
+                <span class="foodname">${keys[index]}&nbsp&nbsp&nbsp</span>
+                <span>${values[index][1]}</span>
+              </div>
               <button class="decrementbtn" id="decrementbtn">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -87,7 +90,7 @@
       let submit = document.getElementById("submit");
 
       submit.addEventListener("click", () => {
-        postData(`${Url}/cart/fetch/order`)
+        getFetch(`${Url}/cart/fetch/order`)
           .then((res) => {
             socket.emit("addOrder");
             window.location.href = res.url; // 页面重定向到根路径

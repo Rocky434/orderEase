@@ -9,9 +9,9 @@ const renderCartPage = (req, res) => {
 };
 
 // 提交購物車時執行，新增訂單，將訂單存在客戶與店家資料庫中。
-const addOrderRecords = async (req, res, next) => {
+const addOrderRecords = async (req, res) => {
     try {
-        await orderRecords_service.addOrderRecords(req);
+        await orderRecords_service.addOrderToDatabase(req);
         res.json({ url: `Records` });
     } catch (error) {
         console.log(error);

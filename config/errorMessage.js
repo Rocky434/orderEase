@@ -5,7 +5,7 @@ const errors = {
     passwordTooShort: { status: 413, message: '密碼至少8個字' },
     unknownError: { status: 414, message: '錯誤' },
     accountNotExist: { status: 415, message: '帳號不存在' },
-    incorrectPassword: { status: 416, message: '密碼錯誤' }
-
+    incorrectPassword: { status: 416, message: '密碼錯誤' },
+    orderNotFound: { status: 417, message: '找不到訂單' },
 };
 module.exports = errors;
