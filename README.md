@@ -6,26 +6,21 @@ The homepage displays information about various dishes. Upon selecting a dish, u
 Users can also view their past orders and track order progress on the order history page.
 
 <h2>Technologies Used</h2>
+
 - **Node.js**: A JavaScript runtime built on Chrome's V8 JavaScript engine, used for server-side scripting.
-  - Version: [Your Node.js Version]
   - [Node.js Documentation](https://nodejs.org/en/docs/)
 
 - **MongoDB**: A NoSQL database program, used for storing and managing data.
-  - Version: [Your MongoDB Version]
   - [MongoDB Documentation](https://docs.mongodb.com/)
 
 - **Socket.IO**: A JavaScript library for real-time web applications, enabling bidirectional communication between web clients and servers.
-  - Version: [Your Socket.IO Version]
   - [Socket.IO Documentation](https://socket.io/docs/)
 
-- **Session**: A middleware for managing user sessions in Node.js applications.
-  - Version: [Your Session Version]
+- **Session**: A middleware for managing user sessions.
   - [Session Documentation](https://www.npmjs.com/package/session)
 
 - **LINE Pay API**: An API provided by LINE for processing payments in your application.
-  - Version: [Your LINE Pay API Version]
   - [LINE Pay API Documentation](https://pay.line.me/developers/apis)
 
 - **Fetch API**: A modern JavaScript interface for fetching resources across the network.
-  - Version: [Your Fetch API Version]
   - [Fetch API Documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
