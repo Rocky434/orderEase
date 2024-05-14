@@ -23,4 +23,6 @@ Users can also view their past orders and track order progress on the order hist
   - [LINE Pay API Documentation](https://pay.line.me/developers/apis)
 
 - **Fetch API**: A modern JavaScript interface for fetching resources across the network.
-  - [Fetch API Documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
+  - [Fetch API Documentation](https://pay.line.me/tw/developers/apis/onlineApis?locale=zh_TW)
+
+<h2></h2>
