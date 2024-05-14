@@ -9,7 +9,7 @@ const rendirectToIndex = (req, res) => {
 
 // 首頁，設置無緩存，
 const renderIndex = (req, res) => {
-    const Url = (process.env.URL) ? `https://${process.env.URL}` : "http://127.0.0.1:3000"; // 使用 Railway URL 或者默認的本地 URL
+    const Url = (process.env.ENV_URL) ? `https://${process.env.ENV_URL}` : "http://127.0.0.1:3000"; // 使用 Railway URL 或者默認的本地 URL
     res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.render('index', { ...req.session.food, Url });
 }

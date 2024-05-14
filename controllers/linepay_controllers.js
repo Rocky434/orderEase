@@ -6,7 +6,7 @@ const { Line_Url, Line_Version } = process.env;
 
 const linePayRequest = async (req, res) => {
     try {
-        const Url = (process.env.RAILWAY_URL) ? `https://${process.env.URL}` : "http://127.0.0.1:3000";
+        const Url = (process.env.ENV_URL) ? `https://${process.env.ENV_URL}` : "http://127.0.0.1:3000";
         const uri = '/payments/request';
         const url = `${Line_Url}${Line_Version}${uri}`;
         const order = await orderRecords_service.getOrder(req);

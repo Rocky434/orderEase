@@ -4,7 +4,7 @@ const updateSession_service = require('../services/updateSession_service');
 // 渲染購物車頁面，設定無快取，在按上一頁時需重新跟發伺服器請求。
 const renderCartPage = (req, res) => {
     res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
-    const Url = (process.env.URL) ? `https://${process.env.URL}` : "http://127.0.0.1:3000"; // 使用 Railway URL 或者默認的本地 URL
+    const Url = (process.env.ENV_URL) ? `https://${process.env.ENV_URL}` : "http://127.0.0.1:3000"; // 使用 Railway URL 或者默認的本地 URL
     res.render('cart', { Url });
 };
 
