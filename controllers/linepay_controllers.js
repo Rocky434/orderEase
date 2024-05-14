@@ -6,6 +6,7 @@ const { Line_Url, Line_Version } = process.env;
 
 const linePayRequest = async (req, res) => {
     try {
+        const Url = (process.env.RAILWAY_URL) ? `https://${process.env.URL}` : "http://127.0.0.1:3000";
         const uri = '/payments/request';
         const url = `${Line_Url}${Line_Version}${uri}`;
         const order = await orderRecords_service.getOrder(req);
@@ -22,12 +23,10 @@ const linePayRequest = async (req, res) => {
                 }
             ],
             redirectUrls: {
-                confirmUrl: `http://127.0.0.1:3000/linePay/confirm`,
-                cancelUrl: `http://127.0.0.1:3000/linePay/cancel`
+                confirmUrl: `${Url}/linePay/confirm`,
+                cancelUrl: `${Url}/linePay/cancel`
             }
         };
-        console.log(linePayBody.packages);
-        console.log(linePayBody.packages[0].products);
         const headers = await createHeaders(uri, JSON.stringify(linePayBody));
         const lineRes = await axios.post(url, linePayBody, { headers });
 
@@ -49,7 +48,6 @@ const linePayConfirm = async (req, res) => {
         const uri = `/payments/${transactionId}/confirm`;
         const url = `${Line_Url}${Line_Version}${uri}`;
         const order = await orderRecords_service.findOrderById(orderId);
-        console.log(order[0].amount);
         const linePayBody = {
             amount: order[0].amount,
             currency: 'TWD'

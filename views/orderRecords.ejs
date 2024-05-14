@@ -9,6 +9,10 @@
     <title>Document</title>
   </head>
   <body>
+    <div class="nav">
+      <a href="/index">首頁</a>
+      <a href="/cart" class="orderRecords">購物車</a>
+    </div>
     <% if(orderRecords){%> <%orderRecords.reverse().forEach((order) => {%>
     <div class="container" id="<%=order.id%>">
       <div class="content">
@@ -28,7 +32,7 @@
         <%order.foods.forEach((food) => {%>
         <div class="foods">
           <span class="portions"><%=food.quantity%></span>
-          <span class="foodName"><%=food.foodsName%></span>
+          <span class="foodName"><%=food.name%></span>
         </div>
         <%});%>
       </div>
@@ -40,7 +44,6 @@
     const socket = io(Url);
     getFetch(`${Url}/fetch/clientSid`)
       .then((data) => {
-        console.log(data.sid);
         socket.emit("clientSid", data.sid);
       })
       .catch((err) => {

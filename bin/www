@@ -49,9 +49,7 @@ db()
       socket.on('completeOrder', (sid) => {
         // 根據 sid 找到對應的 socket
         const targetSocket = connectionsMap.get(sid);
-        console.log(sid);
         if (targetSocket) {
-          console.log("哈囉");
           targetSocket.emit('modifyClientOrderExpiration'); // 向特定客戶端發送訂單完成通知
         }
       });
