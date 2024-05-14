@@ -4,6 +4,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 50px;
 }
 .list {
   border: 1px solid #979490;
@@ -101,4 +102,16 @@ body {
 #submit:hover {
   box-shadow: 0 0 2px black;
   scale: 1.02;
+}
+.nav {
+  width: 900px;
+}
+.nav .orderRecords {
+  float: right;
+}
+a {
+  font-weight: 700;
+  font-size: 20px;
+  color: #000000;
+  text-decoration: none;
 }

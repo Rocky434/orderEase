@@ -1,5 +1,5 @@
 const store_service = require('../services/store_service')
-const Url = (process.env.RAILWAY_URL) ? `https://${process.env.RAILWAY_URL}` : "http://127.0.0.1:3000"; // 使用 Railway URL 或者默認的本地 URL
+const Url = (process.env.URL) ? `https://${process.env.URL}` : "http://127.0.0.1:3000"; // 使用 Railway URL 或者默認的本地 URL
 
 
 //渲染店家的首頁
@@ -9,7 +9,7 @@ const renderStoreIndex = (req, res) => {
 
 
 //渲染店家的歷史訂單紀錄，且設定無快取。
-const renderStoreOderRecords = async (req, res, next) => {
+const renderStoreOderRecords = async (req, res) => {
     try {
         const completedOrders = await store_service.getCompletedOrderRecords(req);
         let currentTime = new Date();
@@ -23,7 +23,7 @@ const renderStoreOderRecords = async (req, res, next) => {
 
 
 //渲染店家訂單處理頁面，且設定無快取。
-const renderPendingOrderRecords = async (req, res, next) => {
+const renderPendingOrderRecords = async (req, res) => {
     try {
         const pendingOrders = await store_service.getPendingOrderRecords();
         let currentTime = new Date();

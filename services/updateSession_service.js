@@ -15,16 +15,16 @@ async function updateCartAndFoodItemQuentity(req) {
     const { body } = req;
     const { food } = req.session;
 
-    //keys是前端回傳的索引值，索引指向session.cart的位置。
+    //keys是前端回傳的索引值，索引指向session.food的位置。
     const keys = Object.keys(body);
-    // cartKeys是session.cart的json數列裡面的主鍵。
+    // cartKeys是session.food的json數列裡面的主鍵。
     const foodKeys = Object.keys(food);
-    // 找出session.cart在keys位置的主鍵名稱，也就是食物名稱。
+    // 找出session.food在keys位置的主鍵名稱，也就是食物名稱。
     const foodname = foodKeys[keys];
     // 食物的訂餐數量
     const values = parseInt(Object.values(body));
 
-    // req.session.cart[foodname][0]是存放食物的訂餐數量，req.session.cart[foodname][1]是食物的價格
+    // req.session.food[foodname][0]是存放食物的訂餐數量，req.session.food[foodname][1]是食物的價格
     req.session.food[foodname][0] += values;
 }
 module.exports = { updataCartItemQuentity, updateCartAndFoodItemQuentity };
