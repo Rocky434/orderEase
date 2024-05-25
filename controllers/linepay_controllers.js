@@ -31,7 +31,7 @@ const linePayRequest = async (req, res) => {
         const lineRes = await axios.post(url, linePayBody, { headers });
 
         if (lineRes?.data?.returnCode === '0000') {
-            await orderRecords_service.addOrderToDatabase(req, order);
+
             res.json({ url: lineRes?.data?.info.paymentUrl.web });
         } else {
             console.log('lineReturnCode', lineRes?.data?.returnCode);
@@ -47,14 +47,15 @@ const linePayConfirm = async (req, res) => {
         const { transactionId, orderId } = req.query;
         const uri = `/payments/${transactionId}/confirm`;
         const url = `${Line_Url}${Line_Version}${uri}`;
-        const order = await orderRecords_service.findOrderById(orderId);
+        const order = await orderRecords_service.getOrder(req);
         const linePayBody = {
-            amount: order[0].amount,
+            amount: order.amount,
             currency: 'TWD'
         };
         const headers = await createHeaders(uri, JSON.stringify(linePayBody));
         const lineRes = await axios.post(url, linePayBody, { headers });
         if (lineRes?.data?.returnCode === '0000') {
+            await orderRecords_service.addOrderToDatabase(req, order);
             res.redirect('/Records');
         } else {
             console.log('fail', lineRes?.data?.returnCode);
@@ -65,7 +66,19 @@ const linePayConfirm = async (req, res) => {
     }
 }
 
+const linePayCancel = async (req, res) => {
+    try {
+        console.log('cancel');
+        const { transactionId, orderId } = req.query;
+        orderRecords_service.deleteOrderToDatabase(req, orderId);
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
 module.exports = {
     linePayRequest,
-    linePayConfirm
+    linePayConfirm,
+    linePayCancel
 };

@@ -2,7 +2,7 @@ const { default: mongoose } = require('mongoose');
 const accountModel = require('../models/accountModel');
 const orderRecordsModel = require('../models/orderRecordsModel');
 const errors = require('../config/errorMessage')
-
+const session_service = require('./session_service');
 
 
 async function getOrderRecords(req) {
@@ -59,6 +59,32 @@ async function addOrderToDatabase(req, order) {
     const createdOrder = await orderRecordsModel.create(order);
     account.OrderRecords.push(createdOrder);
     await account.save();
+    session_service.resetSessionFood(req);
+}
+
+async function deleteOrderToDatabase(req, orderId) {
+    // 找到当前会话中的账户
+    const account = await findAccountById(req.session.sid);
+
+    if (!account) {
+        throw new Error('Account not found');
+    }
+
+    // 在数据库中找到并删除该订单
+    const orderIndex = account.OrderRecords.findIndex(order => order._id.toString() === orderId);
+
+    if (orderIndex === -1) {
+        throw new Error('Order not found');
+    }
+
+    // 从账户的订单记录中移除该订单
+    account.OrderRecords.splice(orderIndex, 1);
+
+    // 删除订单记录
+    await orderRecordsModel.findByIdAndDelete(orderId);
+
+    // 保存更新后的账户
+    await account.save();
 }
 
 
@@ -67,5 +93,6 @@ module.exports = {
     getOrderRecords,
     getOrder,
     findAccountById,
-    findOrderById
+    findOrderById,
+    deleteOrderToDatabase
 };

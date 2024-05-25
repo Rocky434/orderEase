@@ -7,5 +7,5 @@ router
     .get(linepay_controllers.linePayConfirm);
 router
     .route('/cancel')
-    .get();
+    .get(linepay_controllers.linePayCancel);
 module.exports = router;

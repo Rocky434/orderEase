@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const accountModel = require('../models/accountModel');
 const md5 = require('md5');
-const errors = require('../config/errorMessage')
-
+const errors = require('../config/errorMessage');
+const session_service = require('./session_service');
 
 // 註冊帳戶函式
 const registerUser = async (req_body) => {
@@ -20,14 +20,11 @@ const loginUser = async (req) => {
     await isPasswordValid(password);
     await isAccountExisting(account);
     const accountId = await isPasswordExsisting(account, password);
-    await createSession(req, accountId);
+    await session_service.createSession(req, accountId);
 };
 
 // 創建session，設定session.id與accountid一致。
-const createSession = async (req, accountId) => {
-    req.session.sid = accountId;
-    req.session.food = { salad: [0, 60], steak: [0, 220], salmon: [0, 250] };
-}
+
 
 // 創建帳戶
 const createAccount = async (account, password) => {
